@@ -7,6 +7,7 @@
         this.source = props.source;
         this.whole_data = true;
         this.setup_complete = false;
+        this.brush_exists = false;
 
         // formatting functions
         this.yearFormat = d3.timeFormat("%Y");
@@ -94,67 +95,77 @@
                     : d3.select('#main-container').select('.QuestionText')
 
 
-        let mc = container.append('div').attr('class','col-8 main-content'),
-            lc = container.append('div').attr('class','col-4 legend-content'),
-            rows, time, legend, leg, vac, unv, leg_row1, leg_row2, vac_row1, vac_row2, vac_row3, unv_row1, unv_row2, unv_row3
+        let mc = container.append('div').attr('class','col-8 ' + (vis.isStacked ? 'main-content' : 'mx-auto')),
+            lc, rows, time, legend, leg, vac, unv, leg_row1, leg_row2, vac_row1, vac_row2, vac_row3, unv_row1, unv_row2, unv_row3
+        
+        if(vis.isStacked) lc = container.append('div').attr('class','col-4 legend-content')
         
         mc.append('div').attr('class', 'title')
             .append('h3').attr('id','chart-title').text('Weekly count of vaccinated & unvaccinated individuals who caught Covid-19');
-        //mc.append('br');
         mc.append('div').append('p').attr('class','helper').text(
             '*Hover over the bars to explore further' + (vis.isInteractive ? ' and brush the timeline on the right to filter the data' : '')
             );
-        //mc.append('br');
         mc.append('div').attr('id','chart');
-        if(!vis.isStacked) mc.append('div').attr('id','chart2');
-        if(vis.source) mc.append('div').append('a').attr('target','_').attr('href','https://data.cdc.gov/Public-Health-Surveillance/Rates-of-COVID-19-Cases-or-Deaths-by-Age-Group-and/3rge-nu2a/data').attr('class', 'source').text('Source: Centers for Disease Control and Prevention');
 
-        if(vis.isInteractive){
-            time = lc.append('div').attr('id','time_filter_div')
-            time.append('div').attr('class','brush-label').text('Filter by Month Range')
+        if(!vis.isStacked) 
+            mc.append('div')
+                .attr('id','chart2');
 
-            let dates = time.append('div').attr('class','legend-row')
-            
-            dates.append('p').attr('id','left-date').attr('class','alignLeft').text(new Date(2021,3,5).toISOString().split('T')[0])
-            dates.append('p').attr('id','right-date').attr('class','alignRight ').text(new Date(2022,1,7).toISOString().split('T')[0])
+        if(vis.source) 
+            mc.append('div')
+                .append('a')
+                    .attr('target','_')
+                    .attr('href','https://data.cdc.gov/Public-Health-Surveillance/Rates-of-COVID-19-Cases-or-Deaths-by-Age-Group-and/3rge-nu2a/data')
+                    .attr('class', 'source')
+                    .text('Source: Centers for Disease Control and Prevention');
 
-            time.append('div').attr('id','brush-chart')
-
-            legend = lc.append('div').attr('class', 'legend')
-
-            leg = legend.append('div').attr('id','leg')
-            leg_row1 = leg.append('div')
-            leg_row2 = leg.append('div')
-
-            vac = legend.append('div').attr('id','vax-leg')
-            vac.append('div').attr('class','legend-title').text('Rate of Vaccinated')
-            vac_row1 = vac.append('div'); vac_row2 = vac.append('div'); vac_row3 = vac.append('div')
-
-            unv = legend.append('div').attr('id','unvax-leg')
-            unv.append('div').attr('class','legend-title').text('Rate of Unvaccinated')
-            unv_row1 = unv.append('div'); unv_row2 = unv.append('div'); unv_row3 = unv.append('div')
-
-            let years = time.append('div').attr('class', 'legend-row')
-            years.append('p').attr('class','alignLeft').text('2021')
-            years.append('p').attr('class','alignRight ').text('2022')
-
-            vac.style('display','none')
-            unv.style('display', 'none')
-
-        } else {
-            leg = lc.append('div').attr('id','leg').attr('class','legend')
-            leg_row1 = leg.append('div')
-            leg_row2 = leg.append('div')
+        if(vis.isStacked){
+            if(vis.isInteractive){
+                time = lc.append('div').attr('id','time_filter_div')
+                time.append('div').attr('class','brush-label').text('Filter by Month Range')
+    
+                let dates = time.append('div').attr('class','legend-row')
+                
+                dates.append('p').attr('id','left-date').attr('class','alignLeft').text(new Date(2021,3,5).toISOString().split('T')[0])
+                dates.append('p').attr('id','right-date').attr('class','alignRight ').text(new Date(2022,1,7).toISOString().split('T')[0])
+    
+                time.append('div').attr('id','brush-chart')
+    
+                legend = lc.append('div').attr('class', 'legend')
+    
+                leg = legend.append('div').attr('id','leg')
+                leg_row1 = leg.append('div')
+                leg_row2 = leg.append('div')
+    
+                vac = legend.append('div').attr('id','vax-leg')
+                vac.append('div').attr('class','legend-title').text('Rate of Vaccinated')
+                vac_row1 = vac.append('div'); vac_row2 = vac.append('div'); vac_row3 = vac.append('div')
+    
+                unv = legend.append('div').attr('id','unvax-leg')
+                unv.append('div').attr('class','legend-title').text('Rate of Unvaccinated')
+                unv_row1 = unv.append('div'); unv_row2 = unv.append('div'); unv_row3 = unv.append('div')
+    
+                let years = time.append('div').attr('class', 'legend-row')
+                years.append('p').attr('class','alignLeft').text('2021')
+                years.append('p').attr('class','alignRight ').text('2022')
+    
+                vac.style('display','none')
+                unv.style('display', 'none')
+    
+            } else {
+                leg = lc.append('div').attr('id','leg').attr('class','legend')
+                leg_row1 = leg.append('div')
+                leg_row2 = leg.append('div')
+            }
+    
+            rows = vis.isInteractive ? [leg_row1, leg_row2,vac_row1,vac_row2,vac_row3,unv_row1,unv_row2,unv_row3] : [leg_row1,leg_row2]
+            rows = rows.map(d => d.attr('class','legend-row'))
+    
+            rows.forEach((d,i) => {
+                d.append('div').attr('class','legend-value').append('svg').attr('id',vis.rids[i]).append('rect').style('fill',vis.rcolors[i])
+                d.append('div').attr('class','legend-label').text(vis.rlabels[i])
+            })
         }
-
-        rows = vis.isInteractive ? [leg_row1, leg_row2,vac_row1,vac_row2,vac_row3,unv_row1,unv_row2,unv_row3] : [leg_row1,leg_row2]
-        rows = rows.map(d => d.attr('class','legend-row'))
-
-        rows.forEach((d,i) => {
-            d.append('div').attr('class','legend-value').append('svg').attr('id',vis.rids[i]).append('rect').style('fill',vis.rcolors[i])
-            d.append('div').attr('class','legend-label').text(vis.rlabels[i])
-        })
-        
     }
 
     mouse_over(e,d,id,isOne){
@@ -232,6 +243,7 @@
             vis.provenance.push({
                 time: vis.staging_hover.start,
                 label: 'hovered',
+                isBrokenDownByAge: vis.brush_exists,
                 timeHovered: vis.staging_hover.end-vis.staging_hover.start,
                 data: vis.isStacked ? d.data : d
             })
@@ -259,6 +271,17 @@
 
         let fontsize = Math.max(11,vis.height/15)
 
+        //legend alternative for simple vis
+        if(!vis.isStacked)
+            vis.svgs[id].append('text')
+                .attr('text-anchor', 'left')
+                .attr('x', 10)
+                .attr('y', 10)
+                .attr('font-size', fontsize)
+                .attr('font-style', 'italic')
+                .text(isOne ? 'Rate of Unvaccinated' : 'Rate of Vaccinated')
+
+
         //y axis label
         vis.svgs[id].append("text")
             .attr("text-anchor", "middle")
@@ -275,7 +298,7 @@
             .attr("x", vis.width/2)
             .attr("y", vis.height+80)
             .attr("class", "title")
-            .text("Week Start Date")
+            .text("Date")
             .attr("fill","black")
             .attr("font-size", fontsize)
         
@@ -439,18 +462,26 @@
                 vis.adjust_brush(e)
             })
             .on('end', function(e){
+                $('.test').prop('disabled', false)
                 let [startDate,endDate] = vis.adjust_brush(e)
                 if(startDate < endDate){
-                    if(vis.whole_data) vis.provenance.push({
-                        time: Date.now(),
-                        label: 'cleared_brush'
-                    })
-                    else vis.provenance.push({
-                        time: Date.now(),
-                        label: 'brushed',
-                        startDate: startDate,
-                        endDate: endDate
-                    })
+                    if(vis.whole_data){
+                        vis.provenance.push({
+                            time: Date.now(),
+                            label: 'cleared_brush'
+                        })
+                        vis.brush_exists = false;
+                    } 
+                    else {
+                        vis.provenance.push({
+                            time: Date.now(),
+                            label: vis.brush_exists ? 'moved_brush' : 'started_brush',
+                            startDate: startDate,
+                            endDate: endDate
+                        })
+                        vis.brush_exists = true;
+                    }
+                    
                 }
             });
 
