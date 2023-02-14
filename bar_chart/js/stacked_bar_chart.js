@@ -389,7 +389,10 @@
                     .attr("x", d => vis.x_scale(d.Max_Week_Date))
                     .attr("y", d => vis.y_scale(isOne ? d.Age_adjusted_unvax_IR : d.Age_adjusted_vax_IR))
                     .attr("width", vis.x_scale.bandwidth())
-                    .attr("height", d => vis.height - vis.y_scale(isOne ? d.Age_adjusted_unvax_IR : d.Age_adjusted_vax_IR))
+                    .attr("height", d => {
+                        let ret = vis.height - vis.y_scale(isOne ? d.Age_adjusted_unvax_IR : d.Age_adjusted_vax_IR)
+                        return ret < 0 ? -ret : ret;
+                    })
                     .attr("fill", isOne ? "#ef701b" : "#0984ea")
                     .on("mouseover", function(e, d) { vis.mouse_over(e,d,id,isOne) })
                     .on("mouseout", function(e,d){ vis.mouse_out(d,id) })
