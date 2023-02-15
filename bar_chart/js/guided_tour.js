@@ -64,8 +64,8 @@ function startTour(tour,steps){
     if (i != (steps.length - 1)) {
       btns.push({
         text: 'Next',
-        classes: 'shepherd-button-primary',
-        id: 'next-button-' + i,
+        classes: 'shepherd-button-primary '+((i == 2) ? 'test': ''),
+        disabled: i == 2,
         action: function () {
           return tour.next();
         }
@@ -81,6 +81,7 @@ function startTour(tour,steps){
     }
 
     let step = {
+      id: 'step-'+i,
       text: steps[i][3],
       title: steps[i][2],
       buttons: btns
