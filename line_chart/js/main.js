@@ -7,7 +7,7 @@ number_format = d3.format(".2d")
 
 
 function getLineChartData() {
-    return d3.csv("data/line_chart_complex.csv", (row, i) => {
+    return d3.csv("https://vcg.github.io/trust_in_science/line_chart/data/line_chart_complex.csv", (row, i) => {
         row.Vax_18_49 = number_format(+row.Vax_18_49);
         row.Vax_50_79 = number_format(+row.Vax_50_79);
         row.Vax_80 = number_format(+row.Vax_80);

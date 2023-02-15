@@ -4,7 +4,7 @@ function getBarChartData(){
 
     numbers_format = d3.format(".4r")
 
-    return d3.csv("https://hamza-elhamdadi.github.io/trust_in_science/bar_chart/data/bar_chart_complex2.csv", (row,i) => {
+    return d3.csv("https://vcg.github.io/trust_in_science/bar_chart/data/bar_chart_complex2.csv", (row,i) => {
 
         row.Index = i;
         row.Vax_18_49 = numbers_format(+row.Vax_18_49);
