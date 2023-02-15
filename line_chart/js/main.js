@@ -30,12 +30,12 @@ function getLineChartData() {
     });
 }
 
-getLineChartData()
-    .then(data => {
-        let chart = new LineChart({
-            data: data,
-            isComplex: true,
-            isInteractive: true,
-        });
-        chart.initVis('chart')
-    });
+// getLineChartData()
+//     .then(data => {
+//         let chart = new LineChart({
+//             data: data,
+//             isComplex: true,
+//             isInteractive: true,
+//         });
+//         chart.initVis('chart')
+//     });
