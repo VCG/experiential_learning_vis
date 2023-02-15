@@ -27,10 +27,7 @@
         // provenance metadata
         this.trigger = null;
         this.provenance = [];
-        this.staging_hover = {
-            start: null,
-            end: null
-        }
+        this.hover_start = null;
 
         // tooltip
         this.tooltip = d3.select("body")
@@ -172,7 +169,7 @@
         let vis = this;
 
         vis.trigger = setTimeout(() => {
-            vis.staging_hover.start = Date.now() - 1000
+            vis.hover_start = Date.now() - 1000
         }, 1000); 
 
         let tooltip_text = !vis.whole_data 
@@ -238,17 +235,15 @@
     mouse_out(d,id){
         let vis = this;
         clearTimeout(vis.trigger)
-        if(vis.staging_hover.start){
-            vis.staging_hover.end = Date.now()
+        if(vis.hover_start){
             vis.provenance.push({
-                time: vis.staging_hover.start,
+                time: vis.hover_start,
                 label: 'hovered',
                 isBrokenDownByAge: vis.brush_exists,
-                timeHovered: vis.staging_hover.end-vis.staging_hover.start,
+                timeHovered: Date.now()-vis.hover_start,
                 data: vis.isStacked ? d.data : d
             })
-            vis.staging_hover.start = null;
-            vis.staging_hover.end = null;
+            vis.hover_start = null;
         }
             
         vis.tooltip.style("opacity", 0)
