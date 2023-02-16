@@ -7,14 +7,18 @@ class ProvenanceData {
     }
 
     logEvent(eventData){
-        let pd = this;
-        eventData.time -= pd.startTime;
-        eventData.visType = pd.visType;
-        eventData.complexity = pd.complexity;
-        pd.provenance.push(eventData);
+        eventData.time -= this.startTime;
+        eventData.visType = this.visType;
+        eventData.complexity = this.complexity;
+        this.provenance.push(eventData);
     }
 
     getProvenance(){
-        return this.provenance;
+        return {
+            startTime: this.startTime,
+            visType: this.visType,
+            complexity: this.complexity,
+            provenance: this.provenance
+        };
     }
 }

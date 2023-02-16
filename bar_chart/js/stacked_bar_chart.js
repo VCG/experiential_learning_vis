@@ -251,7 +251,7 @@
     }
 
     getProvenance(){
-        return this.provenance
+        return this.provData.getProvenance()
     }
 
     initVis(id,isOne){
