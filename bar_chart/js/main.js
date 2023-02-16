@@ -33,23 +33,3 @@ function getBarChartData(complexity){
 // getBarChartData('simple')
 // getBarChartData('moderate')
 // getBarChartData('complex')
-
-// .then(data => {
-//     chart = new StackedBarChart({
-//         data: data,
-//         stacked: true,
-//         interactive: false
-//     });
-//     chart.initVis('chart')
-//     createTour('moderate')
-// });
-// .then(data => {
-//     chart = new StackedBarChart({
-//         data: data,
-//         stacked: false,
-//         interactive: false
-//     });
-//     chart.initVis('chart',true)
-//     chart.initVis('chart2',false)
-//     createTour('simple')
-// });

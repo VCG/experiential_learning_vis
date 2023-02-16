@@ -5,19 +5,12 @@
         this.complexity = props.complexity;
         this.source = props.source;
         this.whole_data = true;
-        this.setup_complete = false;
         this.brush_exists = false;
-
-        // formatting functions
-        this.yearFormat = d3.timeFormat("%Y");
-        this.number_format = d3.format(',');
         
         // global data
         this.data = props.data;
         this.displayData = props.data;
         this.months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-        this.num_days = [31,28,31,30,31,30,31,31,30,31,30,31];
-        this.weeks = { 14: 'Apr', 18: 'May', 23: 'Jun', 27: 'Jul', 31: 'Aug', 36: 'Sep', 40: 'Oct', 44: 'Nov', 49: 'Dec', 1: 'Jan', 6: 'Feb'};
         this.rids = ['lsvg1','lsvg2','vsvg1','vsvg2','vsvg3','usvg1','usvg2','usvg3'];
         this.rcolors = ['#ef701b','#0984ea','#9e3a26','#ef701b','#f4d166','#04386b','#0984ea','#7dc9f5'];
         this.rlabels = ['Rate of Unvaccinated','Rate of Vaccinated','Ages 80+','Ages 50-79','Ages 18-49','Ages 80+','Ages 50-79','Ages 18-49'];
@@ -89,7 +82,6 @@
                         .insert('div',':first-child')
                         .attr('class','row')
                     : d3.select('#main-container').select('.QuestionText')
-
 
         let mc = container.append('div').attr('class','col-8 ' + (vis.complexity != 'simple' ? 'main-content' : 'mx-auto')),
             lc, rows, time, legend, leg, vac, unv, leg_row1, leg_row2, vac_row1, vac_row2, vac_row3, unv_row1, unv_row2, unv_row3
@@ -173,44 +165,44 @@
 
         let tooltip_text = !vis.whole_data 
             ? `<b>Week:</b> ${d.data.Max_Week_Date2}<br>
-               <b>Year:</b> ${vis.yearFormat(d.data.Max_Week_Date)}<br>
+               <b>Year:</b> ${yearFormat(d.data.Max_Week_Date)}<br>
                <br>
                <b>Rate of Unvaccinated (per 100k):</b>
                <br>
                <span style="font-size:11px;color: ${vis.color('Unvax_80')}"> <b>Ages 80+:</b></span>
-               <span style="font-size:11px;color: ${vis.color('Unvax_80')}"> ${vis.number_format(d.data['Unvax_80'])}</span>
+               <span style="font-size:11px;color: ${vis.color('Unvax_80')}"> ${number_format(d.data['Unvax_80'])}</span>
                <br>
                <span style="font-size:11px;color: ${vis.color('Unvax_50_79')}"> <b>Ages 50-79:</b></span>
-               <span style="font-size:11px;color: ${vis.color('Unvax_50_79')}"> ${vis.number_format(d.data['Unvax_50_79'])}</span>
+               <span style="font-size:11px;color: ${vis.color('Unvax_50_79')}"> ${number_format(d.data['Unvax_50_79'])}</span>
                <br>
                <span style="font-size:11px;color: ${vis.color('Unvax_18_49')}"> <b>Ages 18-49:</b></span>
-               <span style="font-size:11px;color: ${vis.color('Unvax_18_49')}"> ${vis.number_format(d.data['Unvax_18_49'])}</span>
+               <span style="font-size:11px;color: ${vis.color('Unvax_18_49')}"> ${number_format(d.data['Unvax_18_49'])}</span>
                <br><br>
                <b>Rate of Vaccinated (per 100k):</b>
                <br>
                <span style="font-size:11px;color: ${vis.color('Vax_80')}"> <b>Ages 80+:</b></span>
-               <span style="font-size:11px;color: ${vis.color('Vax_80')}"> ${vis.number_format(d.data['Vax_80'])}</span>
+               <span style="font-size:11px;color: ${vis.color('Vax_80')}"> ${number_format(d.data['Vax_80'])}</span>
                <br>
                <span style="font-size:11px;color: ${vis.color('Vax_50_79')}"> <b>Ages 50-79:</b></span>
-               <span style="font-size:11px;color: ${vis.color('Vax_50_79')}"> ${vis.number_format(d.data['Vax_50_79'])}</span>
+               <span style="font-size:11px;color: ${vis.color('Vax_50_79')}"> ${number_format(d.data['Vax_50_79'])}</span>
                <br>
                <span style="font-size:11px;color: ${vis.color('Vax_18_49')}"> <b>Ages 18-49:</b></span>
-               <span style="font-size:11px;color: ${vis.color('Vax_18_49')}"> ${vis.number_format(d.data['Vax_18_49'])}</span>
+               <span style="font-size:11px;color: ${vis.color('Vax_18_49')}"> ${number_format(d.data['Vax_18_49'])}</span>
                <br><br>`
             : vis.complexity != 'simple' 
                 ? `<b>Week:</b> ${d.data.Max_Week_Date2}<br>
-                <b>Year:</b> ${vis.yearFormat(d.data.Max_Week_Date)}
+                <b>Year:</b> ${yearFormat(d.data.Max_Week_Date)}
                 <br>
                 <span style="font-size:11px;color: ${vis.color('Unvax_80')}"> <b>Rate of Unvaccinated (per 100k):</b></span>
-                <span style="font-size:11px;color: ${vis.color('Unvax_80')}"> ${vis.number_format(d.data.Age_adjusted_unvax_IR)}</span>
+                <span style="font-size:11px;color: ${vis.color('Unvax_80')}"> ${number_format(d.data.Age_adjusted_unvax_IR)}</span>
                 <br>
                 <span style="font-size:11px;color: ${vis.color('Vax_80')}"> <b>Rate of Vaccinated (per 100k):</b></span>
-                <span style="font-size:11px;color: ${vis.color('Unvax_50_79')}"> ${vis.number_format(d.data.Age_adjusted_vax_IR)}</span>
+                <span style="font-size:11px;color: ${vis.color('Unvax_50_79')}"> ${number_format(d.data.Age_adjusted_vax_IR)}</span>
                 <br>`
                 : `<b>Week:</b> ${d.Max_Week_Date2}<br>
-                <b>Year:</b> ${vis.yearFormat(d.Max_Week_Date)}<br>
+                <b>Year:</b> ${yearFormat(d.Max_Week_Date)}<br>
                 <span style="font-size:11px;color: ${vis.color(isOne ? 'Unvax_80' : 'Vax_80')}"> <b>${(isOne ? "Rate of Unvaccinated (per 100k): " : "Rate of Vaccinated (per 100k): ")}</b></span>
-                <span style="font-size:11px;color: ${vis.color(isOne ? 'Unvax_80' : 'Vax_80')}"> ${vis.number_format(isOne ? d.Age_adjusted_unvax_IR : d.Age_adjusted_vax_IR)}</span>
+                <span style="font-size:11px;color: ${vis.color(isOne ? 'Unvax_80' : 'Vax_80')}"> ${number_format(isOne ? d.Age_adjusted_unvax_IR : d.Age_adjusted_vax_IR)}</span>
                 <br>`
 
         let [x_coord, y_coord] = d3.pointer(e,this)
