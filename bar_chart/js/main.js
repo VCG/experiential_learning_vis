@@ -1,5 +1,5 @@
 var chart
-function getBarChartData(){
+function getBarChartData(complexity){
     let parseDate = d3.timeParse("%Y-%m-%d");
 
     numbers_format = d3.format(".4r")
@@ -23,20 +23,21 @@ function getBarChartData(){
 
         return row;
     })
+    .then(data => {
+        chart = new StackedBarChart({
+            data: data,
+            complexity: complexity
+        });
+        chart.initVis('chart', true)
+        if(complexity == 'simple') chart.initVis('chart2', false)
+        createTour(complexity)
+    });
 }
 
-let complexity = 'complex'
+// getBarChartData('simple')
+// getBarChartData('moderate')
+getBarChartData('complex')
 
-getBarChartData()
-.then(data => {
-    chart = new StackedBarChart({
-        data: data,
-        complexity: complexity
-    });
-    chart.initVis('chart')
-    if(complexity == 'simple') chart.initVis('chart2')
-    createTour(complexity)
-});
 // .then(data => {
 //     chart = new StackedBarChart({
 //         data: data,

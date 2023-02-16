@@ -266,13 +266,13 @@
         let fontsize = Math.max(11,vis.height/15)
 
         //legend alternative for simple vis
-        if(!vis.complexity != 'simple')
+        if(vis.complexity == 'simple')
             vis.svgs[id].append('text')
                 .attr('text-anchor', 'left')
                 .attr('x', 10)
                 .attr('y', 10)
                 .attr('font-size', fontsize)
-                .attr('font-style', 'italic')
+                .attr('font-weight', 500)
                 .text(isOne ? 'Rate of Unvaccinated' : 'Rate of Vaccinated')
 
 

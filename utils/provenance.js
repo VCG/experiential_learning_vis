@@ -8,8 +8,6 @@ class ProvenanceData {
 
     logEvent(eventData){
         eventData.time -= this.startTime;
-        eventData.visType = this.visType;
-        eventData.complexity = this.complexity;
         this.provenance.push(eventData);
     }
 
