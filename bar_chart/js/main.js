@@ -1,5 +1,5 @@
 var chart
-function getBarChartData(complexity){
+function getBarChartData(complexity, showSource, selector){
     return d3.csv("https://vcg.github.io/trust_in_science/bar_chart/data/bar_chart_complex2.csv", (row,i) => {
 
         row.Index = i;
@@ -22,7 +22,9 @@ function getBarChartData(complexity){
     .then(data => {
         chart = new StackedBarChart({
             data: data,
-            complexity: complexity
+            complexity: complexity,
+            source: showSource,
+            selector: selector
         });
         chart.initVis('chart', true)
         if(complexity == 'simple') chart.initVis('chart2', false)
