@@ -30,6 +30,6 @@ function getBarChartData(complexity){
     });
 }
 
-// getBarChartData('simple')
+getBarChartData('simple')
 // getBarChartData('moderate')
 // getBarChartData('complex')

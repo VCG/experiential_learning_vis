@@ -48,10 +48,10 @@
             .range(['#0984ea','#0984ea','#0984ea', '#ef701b','#ef701b','#ef701b'])  
 
         // set the dimensions and margins of the graph
-        this.margin = {top: 20+(this.complexity == 'simple')*20, right: 20, bottom: 60, left: 70};
+        this.margin = {top: 20, right: 20, bottom: 60, left: 70};
         this.totalWidth = d3.select('#chart').node().getBoundingClientRect().width
         this.width = this.totalWidth - this.margin.left - this.margin.right;
-        this.height = this.totalWidth/(2-(this.complexity != 'simple')/2) - (this.complexity == 'simple')*20 - this.margin.top - this.margin.bottom;
+        this.height = this.totalWidth/(2-(this.complexity != 'simple')/2) - this.margin.top - this.margin.bottom;
 
         this.x_scale = d3.scaleBand()
             .range([0, this.width])
