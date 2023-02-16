@@ -1,6 +1,5 @@
 var chart
 function getBarChartData(complexity){
-
     return d3.csv("https://vcg.github.io/trust_in_science/bar_chart/data/bar_chart_complex2.csv", (row,i) => {
 
         row.Index = i;
@@ -33,7 +32,7 @@ function getBarChartData(complexity){
 
 // getBarChartData('simple')
 // getBarChartData('moderate')
-getBarChartData('complex')
+// getBarChartData('complex')
 
 // .then(data => {
 //     chart = new StackedBarChart({
