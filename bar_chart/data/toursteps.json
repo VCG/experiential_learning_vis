@@ -1,0 +1,78 @@
+{
+    "complex": [
+      {
+        "id": "#chart",
+        "location": "bottom",
+        "title": "Bar Chart Tour",
+        "text": "Before we show you the interactive bar chart, we will first guide you through the main components of the visualization.",
+        "disabled": false
+      },
+      {
+        "id": "#chart",
+        "location": "bottom",
+        "title": "Bar Chart Visualization",
+        "text": "This is the main visualization. Once you filter the data, all changes will directly show up here.<br> <b>Your turn:</b> Hover over a bar to see details about that bar.",
+        "disabled": false
+      },
+      {
+        "id": "#time_filter_div",
+        "location": "left",
+        "title": "This is a time filter!",
+        "text": "You can use this filter to brush and select a subset of weeks. Only the data of the selected weeks will be shown in the visualization.<br> <b>Your turn:</b> Try creating a filter by clicking and dragging over a set of weeks.",
+        "disabled": true
+      },
+      {
+        "id": ".legend",
+        "location": "left",
+        "title": "This is the legend.",
+        "text": "You can use this legend to highlight different age groups!<br> <b>Your turn:</b> Try hovering over an age group to highlight that group.<br><br> That\"s it, have fun exploring the data!",
+        "disabled": false
+      }
+    ],
+    "moderate": [
+      {
+        "id": "#chart",
+        "location": "bottom",
+        "title": "Bar Chart Tour",
+        "text": "Before we show you the interactive bar chart, we will first guide you through the main components of the visualization.",
+        "disabled": false
+      },
+      {
+        "id": "#chart",
+        "location": "bottom",
+        "title": "Bar Chart Visualization",
+        "text": "This is the main visualization.<br> <b>Your turn:</b> Hover over a bar to see details about that bar.",
+        "disabled": false
+      },
+      {
+        "id": ".legend",
+        "location": "left",
+        "title": "This is the legend.",
+        "text": "You can use this legend to highlight different age groups!<br> <b>Your turn:</b> Try hovering over an age group to highlight that group.<br><br> That\"s it, have fun exploring the data!",
+        "disabled": false
+      }
+    ],
+    "simple": [
+      {
+        "id": "#chart",
+        "location": "bottom",
+        "title": "Bar Chart Tour",
+        "text": "Before we show you the interactive bar chart, we will first guide you through the main components of the visualization.",
+        "disabled": false
+      },
+      {
+        "id": "#chart",
+        "location": "bottom",
+        "title": "Bar Chart Visualization",
+        "text": "This is the first of the two main visualizations.<br> <b>Your turn:</b> Hover over a bar to see details about that bar.",
+        "disabled": false
+      },
+      {
+        "id": "#chart2",
+        "location": "top",
+        "title": "Bar Chart Visualization",
+        "text": "This is the second of the two main visualizations.<br> <b>Your turn:</b> Hover over a bar to see details about that bar. <br><br> That\"s it, have fun exploring the data!",
+        "disabled": false
+      }
+    ]
+  }
