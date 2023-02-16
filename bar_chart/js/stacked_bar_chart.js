@@ -75,8 +75,9 @@
 
     }
 
-    buildHtml(selector=null) {
+    buildHtml(selector) {
         let vis = this;
+        console.log(selector)
         let container = selector 
                     ? d3.select(`#${selector.questionId}`).select('.QuestionText')
                         .insert('div',':first-child')

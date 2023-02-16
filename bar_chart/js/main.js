@@ -1,5 +1,5 @@
 var chart
-function getBarChartData(complexity, showSource, selector){
+function getBarChartData(complexity, showSource, doTour, selector){
     return d3.csv("https://vcg.github.io/trust_in_science/bar_chart/data/bar_chart_complex2.csv", (row,i) => {
 
         row.Index = i;
@@ -28,10 +28,10 @@ function getBarChartData(complexity, showSource, selector){
         });
         chart.initVis('chart', true)
         if(complexity == 'simple') chart.initVis('chart2', false)
-        createTour(complexity)
+        if(doTour) createTour(complexity)
     });
 }
 
-getBarChartData('simple')
-// getBarChartData('moderate')
-// getBarChartData('complex')
+// getBarChartData('simple', true, true)
+// getBarChartData('moderate', true, true)
+// getBarChartData('complex', true, true)
