@@ -1,8 +1,5 @@
 var chart
 function getBarChartData(complexity){
-    let parseDate = d3.timeParse("%Y-%m-%d");
-
-    numbers_format = d3.format(".4r")
 
     return d3.csv("https://vcg.github.io/trust_in_science/bar_chart/data/bar_chart_complex2.csv", (row,i) => {
 

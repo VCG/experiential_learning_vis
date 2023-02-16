@@ -55,10 +55,10 @@
             .range(['#0984ea','#0984ea','#0984ea', '#ef701b','#ef701b','#ef701b'])  
 
         // set the dimensions and margins of the graph
-        this.margin = {top: 20, right: 20, bottom: 100, left: 70};
+        this.margin = {top: 20+(this.complexity == 'simple')*20, right: 20, bottom: 60, left: 70};
         this.totalWidth = d3.select('#chart').node().getBoundingClientRect().width
         this.width = this.totalWidth - this.margin.left - this.margin.right;
-        this.height = this.totalWidth/(2-(this.complexity != 'simple')/2) - this.margin.top - this.margin.bottom;
+        this.height = this.totalWidth/(2-(this.complexity != 'simple')/2) - (this.complexity == 'simple')*20 - this.margin.top - this.margin.bottom;
 
         this.x_scale = d3.scaleBand()
             .range([0, this.width])
@@ -285,16 +285,16 @@
             .attr("font-size", fontsize)
             .text("Cases per 100k people");
 
-        //add x label
-        vis.svgs[id]
-            .append("text")
-            .attr("text-anchor", "middle")
-            .attr("x", vis.width/2)
-            .attr("y", vis.height+80)
-            .attr("class", "title")
-            .text("Date")
-            .attr("fill","black")
-            .attr("font-size", fontsize)
+        // //add x label
+        // vis.svgs[id]
+        //     .append("text")
+        //     .attr("text-anchor", "middle")
+        //     .attr("x", vis.width/2)
+        //     .attr("y", vis.height+80)
+        //     .attr("class", "title")
+        //     .text("Date")
+        //     .attr("fill","black")
+        //     .attr("font-size", fontsize)
         
         vis.svgs[id].append("g")
             .attr("transform", `translate(0, ${vis.height})`)

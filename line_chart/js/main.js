@@ -1,11 +1,3 @@
-let parseDate = d3.timeParse("%Y-%m-%d");
-let formatDate = d3.timeFormat("%V");
-let formatDate2 = d3.timeParse("%Y-%m-%d")
-let formatTime = d3.timeFormat("%Y-%m-%d");
-const yearFormat = d3.timeFormat("%Y");
-number_format = d3.format(".2d")
-
-
 function getLineChartData() {
     return d3.csv("https://vcg.github.io/trust_in_science/line_chart/data/line_chart_complex.csv", (row, i) => {
         row.Vax_18_49 = number_format(+row.Vax_18_49);
