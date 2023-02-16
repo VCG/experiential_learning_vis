@@ -2,8 +2,7 @@
 
     constructor(props) {
         // global metadata
-        this.isInteractive = props.interactive;
-        this.isStacked = props.stacked;
+        this.complexity = props.complexity;
         this.source = props.source;
         this.whole_data = true;
         this.setup_complete = false;
@@ -26,8 +25,8 @@
 
         // provenance metadata
         this.trigger = null;
-        this.provenance = [];
         this.hover_start = null;
+        this.provData = new ProvenanceData('bar chart', this.complexity)
 
         // tooltip
         this.tooltip = d3.select("body")
@@ -59,7 +58,7 @@
         this.margin = {top: 20, right: 20, bottom: 100, left: 70};
         this.totalWidth = d3.select('#chart').node().getBoundingClientRect().width
         this.width = this.totalWidth - this.margin.left - this.margin.right;
-        this.height = this.totalWidth/(2-this.isStacked/2) - this.margin.top - this.margin.bottom;
+        this.height = this.totalWidth/(2-(this.complexity != 'simple')/2) - this.margin.top - this.margin.bottom;
 
         this.x_scale = d3.scaleBand()
             .range([0, this.width])
@@ -92,19 +91,19 @@
                     : d3.select('#main-container').select('.QuestionText')
 
 
-        let mc = container.append('div').attr('class','col-8 ' + (vis.isStacked ? 'main-content' : 'mx-auto')),
+        let mc = container.append('div').attr('class','col-8 ' + (vis.complexity != 'simple' ? 'main-content' : 'mx-auto')),
             lc, rows, time, legend, leg, vac, unv, leg_row1, leg_row2, vac_row1, vac_row2, vac_row3, unv_row1, unv_row2, unv_row3
         
-        if(vis.isStacked) lc = container.append('div').attr('class','col-4 legend-content')
+        if(vis.complexity != 'simple') lc = container.append('div').attr('class','col-4 legend-content')
         
         mc.append('div').attr('class', 'title')
             .append('h3').attr('id','chart-title').text('Weekly count of vaccinated & unvaccinated individuals who caught Covid-19');
         mc.append('div').append('p').attr('class','helper').text(
-            '*Hover over the bars to explore further' + (vis.isInteractive ? ' and brush the timeline on the right to filter the data' : '')
+            '*Hover over the bars to explore further' + (vis.complexity == 'complex' ? ' and brush the timeline on the right to filter the data' : '')
             );
         mc.append('div').attr('id','chart');
 
-        if(!vis.isStacked) 
+        if(!vis.complexity != 'simple') 
             mc.append('div')
                 .attr('id','chart2');
 
@@ -116,8 +115,8 @@
                     .attr('class', 'source')
                     .text('Source: Centers for Disease Control and Prevention');
 
-        if(vis.isStacked){
-            if(vis.isInteractive){
+        if(vis.complexity != 'simple'){
+            if(vis.complexity == 'complex'){
                 time = lc.append('div').attr('id','time_filter_div')
                 time.append('div').attr('class','brush-label').text('Filter by Month Range')
     
@@ -155,7 +154,7 @@
                 leg_row2 = leg.append('div')
             }
     
-            rows = vis.isInteractive ? [leg_row1, leg_row2,vac_row1,vac_row2,vac_row3,unv_row1,unv_row2,unv_row3] : [leg_row1,leg_row2]
+            rows = vis.complexity == 'complex' ? [leg_row1, leg_row2,vac_row1,vac_row2,vac_row3,unv_row1,unv_row2,unv_row3] : [leg_row1,leg_row2]
             rows = rows.map(d => d.attr('class','legend-row'))
     
             rows.forEach((d,i) => {
@@ -198,7 +197,7 @@
                <span style="font-size:11px;color: ${vis.color('Vax_18_49')}"> <b>Ages 18-49:</b></span>
                <span style="font-size:11px;color: ${vis.color('Vax_18_49')}"> ${vis.number_format(d.data['Vax_18_49'])}</span>
                <br><br>`
-            : vis.isStacked 
+            : vis.complexity != 'simple' 
                 ? `<b>Week:</b> ${d.data.Max_Week_Date2}<br>
                 <b>Year:</b> ${vis.yearFormat(d.data.Max_Week_Date)}
                 <br>
@@ -228,7 +227,7 @@
         vis.svgs[id].selectAll(".main-rect").style("opacity", 0.3);
 
         // reference this particular, highlighted bars with 1 opacity
-        vis.svgs[id].selectAll(".rect-bar-" + (vis.isStacked ? d.data.Max_Week_Date2 : d.Max_Week_Date2)).style("opacity", 1);
+        vis.svgs[id].selectAll(".rect-bar-" + (vis.complexity != 'simple' ? d.data.Max_Week_Date2 : d.Max_Week_Date2)).style("opacity", 1);
 
     }
 
@@ -236,12 +235,12 @@
         let vis = this;
         clearTimeout(vis.trigger)
         if(vis.hover_start){
-            vis.provenance.push({
+            vis.provData.logEvent({
                 time: vis.hover_start,
                 label: 'hovered',
                 isBrokenDownByAge: vis.brush_exists,
                 timeHovered: Date.now()-vis.hover_start,
-                data: vis.isStacked ? d.data : d
+                data: vis.complexity != 'simple' ? d.data : d
             })
             vis.hover_start = null;
         }
@@ -267,7 +266,7 @@
         let fontsize = Math.max(11,vis.height/15)
 
         //legend alternative for simple vis
-        if(!vis.isStacked)
+        if(!vis.complexity != 'simple')
             vis.svgs[id].append('text')
                 .attr('text-anchor', 'left')
                 .attr('x', 10)
@@ -317,7 +316,7 @@
 
         vis.svgs[id].append("g").attr("class", "y-axis");
 
-        if(vis.isInteractive) vis.initBrush(id)
+        if(vis.complexity == 'complex') vis.initBrush(id)
         vis.updateVis(id,isOne)
     }
 
@@ -337,10 +336,10 @@
         vis.groups = vis.displayData.map(d => (d.Max_Week_Date))
 
         //stack the data? --> stack per subgroup
-        let stackedData; if(vis.isStacked) stackedData = d3.stack().keys(vis.subgroups)(vis.displayData);
+        let stackedData; if(vis.complexity != 'simple') stackedData = d3.stack().keys(vis.subgroups)(vis.displayData);
 
         vis.x_scale.domain(vis.groups);
-        vis.y_scale.domain([0, vis.isStacked 
+        vis.y_scale.domain([0, vis.complexity != 'simple' 
             ? d3.max(stackedData, d => d3.max(d, function (d) { return d[1]; })) 
             : d3.max(vis.data.map(d => d.Age_adjusted_unvax_IR))]);
 
@@ -354,7 +353,7 @@
         vis.svgs[id].selectAll(".stacked").remove();
 
         // Show the bars
-        if(vis.isStacked){
+        if(vis.complexity != 'simple'){
             vis.svgs[id].append("g")
                 .attr("class", "stacked")
                 .selectAll("g")
@@ -464,14 +463,14 @@
                 let [startDate,endDate] = vis.adjust_brush(e)
                 if(startDate < endDate){
                     if(vis.whole_data){
-                        vis.provenance.push({
+                        vis.provData.logEvent({
                             time: Date.now(),
                             label: 'cleared_brush'
                         })
                         vis.brush_exists = false;
                     } 
                     else {
-                        vis.provenance.push({
+                        vis.provData.logEvent({
                             time: Date.now(),
                             label: vis.brush_exists ? 'moved_brush' : 'started_brush',
                             startDate: startDate,

@@ -25,16 +25,18 @@ function getBarChartData(){
     })
 }
 
-// getBarChartData()
-// .then(data => {
-//     chart = new StackedBarChart({
-//         data: data,
-//         stacked: true,
-//         interactive: true
-//     });
-//     chart.initVis('chart')
-//     createTour('complex')
-// });
+let complexity = 'complex'
+
+getBarChartData()
+.then(data => {
+    chart = new StackedBarChart({
+        data: data,
+        complexity: complexity
+    });
+    chart.initVis('chart')
+    if(complexity == 'simple') chart.initVis('chart2')
+    createTour(complexity)
+});
 // .then(data => {
 //     chart = new StackedBarChart({
 //         data: data,

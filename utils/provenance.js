@@ -11,7 +11,7 @@ class ProvenanceData {
         eventData.time -= pd.startTime;
         eventData.visType = pd.visType;
         eventData.complexity = pd.complexity;
-        vis.provenance.push(eventData);
+        pd.provenance.push(eventData);
     }
 
     getProvenance(){
