@@ -255,7 +255,7 @@
             .append("g")
             .attr("transform", `translate(${vis.margin.left},${vis.margin.top})`);
 
-        let fontsize = Math.max(11,vis.height/15)
+        let fontsize = Math.max(11,vis.height/18)
 
         //legend alternative for simple vis
         if(vis.complexity == 'simple')
