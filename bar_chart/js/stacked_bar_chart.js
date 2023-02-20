@@ -10,7 +10,6 @@
         // global data
         this.data = props.data;
         this.displayData = props.data;
-        this.months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
         this.rids = ['lsvg1','lsvg2','vsvg1','vsvg2','vsvg3','usvg1','usvg2','usvg3'];
         this.rcolors = ['#ef701b','#0984ea','#9e3a26','#ef701b','#f4d166','#04386b','#0984ea','#7dc9f5'];
         this.rlabels = ['Rate of Unvaccinated','Rate of Vaccinated','Ages 80+','Ages 50-79','Ages 18-49','Ages 80+','Ages 50-79','Ages 18-49'];
@@ -60,7 +59,7 @@
         this.x_axis = d3.axisBottom(this.x_scale).tickFormat(
             (d,i) => {
                 let [_,mo,day] = d.toISOString().split('T')[0].split('-')
-                return (this.whole_data && i%2==1) ? '' : `${this.months[+mo-1]} ${day}`
+                return (this.whole_data && i%2==1) ? '' : `${parseMonthDay(d)}`
             }
         );
 
@@ -459,7 +458,7 @@
                             time: Date.now(),
                             label: 'cleared_brush'
                         })
-                        $('.clear-step').prop('disabled', false).removeClass('disabled-button')
+                        d3.select('.clear-step').property('disabled', false).classed('disabled-button', false)
                         vis.brush_exists = false;
                     } 
                     else {
@@ -469,7 +468,7 @@
                             startDate: startDate.toISOString().split('T')[0],
                             endDate: endDate.toISOString().split('T')[0]
                         })
-                        $(vis.brush_exists ? '.move-step' : '.brush-step').prop('disabled', false).removeClass('disabled-button')
+                        d3.select(vis.brush_exists ? '.move-step' : '.brush-step').property('disabled', false).classed('disabled-button', false)
                         vis.brush_exists = true;
                     }
                     
