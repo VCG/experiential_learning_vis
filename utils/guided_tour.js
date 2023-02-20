@@ -37,7 +37,7 @@ function startTour(tour,steps){
     if (i != (steps.length - 1)) {
       btns.push({
         text: 'Next',
-        classes: 'shepherd-button-primary '+steps[id].class+(steps[i].disabled ? ' disabled-button': ''),
+        classes: 'shepherd-button-primary '+steps[i].class+(steps[i].disabled ? ' disabled-button': ''),
         disabled: steps[i].disabled,
         action: function () {
           return tour.next();
