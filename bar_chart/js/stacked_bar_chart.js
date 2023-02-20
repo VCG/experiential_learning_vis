@@ -232,7 +232,8 @@
                 label: 'hovered',
                 isBrokenDownByAge: vis.brush_exists,
                 timeHovered: Date.now()-vis.hover_start,
-                data: vis.complexity != 'simple' ? d.data : d
+                week: vis.complexity != 'simple' ? d.data.Week : d.Week,
+                id: id
             })
             vis.hover_start = null;
         }
@@ -451,7 +452,6 @@
                 vis.adjust_brush(e)
             })
             .on('end', function(e){
-                $('.test').prop('disabled', false)
                 let [startDate,endDate] = vis.adjust_brush(e)
                 if(startDate < endDate){
                     if(vis.whole_data){
@@ -459,15 +459,17 @@
                             time: Date.now(),
                             label: 'cleared_brush'
                         })
+                        $('.clear-step').prop('disabled', false).removeClass('disabled-button')
                         vis.brush_exists = false;
                     } 
                     else {
                         vis.provData.logEvent({
                             time: Date.now(),
                             label: vis.brush_exists ? 'moved_brush' : 'started_brush',
-                            startDate: startDate,
-                            endDate: endDate
+                            startDate: startDate.toISOString().split('T')[0],
+                            endDate: endDate.toISOString().split('T')[0]
                         })
+                        $(vis.brush_exists ? '.move-step' : '.brush-step').prop('disabled', false).removeClass('disabled-button')
                         vis.brush_exists = true;
                     }
                     
