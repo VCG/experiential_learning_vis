@@ -1,7 +1,7 @@
 var chart
 function getBarChartData(complexity, showSource, doTour, selector){
-    return d3.json('data/toursteps.json')
-    // return d3.json('https://vcg.github.io/trust_in_science/bar_chart/data/toursteps.json')
+    // return d3.json('data/toursteps.json')
+    return d3.json('https://vcg.github.io/trust_in_science/bar_chart/data/toursteps.json')
     .then(toursteps => {
         d3.csv("https://vcg.github.io/trust_in_science/bar_chart/data/bar_chart_complex2.csv", (row,i) => {
             row.Index = i;
@@ -39,4 +39,4 @@ function getBarChartData(complexity, showSource, doTour, selector){
 
 // getBarChartData('simple', true, true)
 // getBarChartData('moderate', true, true)
-getBarChartData('complex', true, true)
+// getBarChartData('complex', true, true)
