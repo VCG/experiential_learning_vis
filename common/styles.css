@@ -132,3 +132,7 @@ h3 {
     float: right;
     margin-bottom: 0;
 }
+
+.disabled-button {
+    background-color: grey;
+}
