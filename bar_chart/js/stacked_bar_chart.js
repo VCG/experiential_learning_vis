@@ -445,6 +445,23 @@
             return [startDate, endDate]
         }
 
+        vis.clear_brush_func = function(){
+            vis.provData.logEvent({
+                time: Date.now(),
+                label: 'cleared_brush'
+            })
+            d3.select('.clear-step').property('disabled', false).classed('disabled-button', false)
+            vis.brush_exists = false;
+        }
+
+        document.addEventListener('keydown', function(e) {
+            if(e.key === "Escape") {
+                vis.adjust_brush({selection: [0,0]})
+                d3.select('.selection').attr('x', 0).attr('width',0)
+                vis.clear_brush_func()
+            }
+        })
+
         let brush = d3.brushX()
             .extent([[0,0], [width, height]])
             .on("brush", function(e) {
@@ -454,12 +471,7 @@
                 let [startDate,endDate] = vis.adjust_brush(e)
                 if(startDate < endDate){
                     if(vis.whole_data){
-                        vis.provData.logEvent({
-                            time: Date.now(),
-                            label: 'cleared_brush'
-                        })
-                        d3.select('.clear-step').property('disabled', false).classed('disabled-button', false)
-                        vis.brush_exists = false;
+                        vis.clear_brush_func()
                     } 
                     else {
                         vis.provData.logEvent({

@@ -1,4 +1,5 @@
 var chart
+
 function getBarChartData(complexity, showSource, doTour, selector){
     return d3.json('https://vcg.github.io/trust_in_science/bar_chart/data/toursteps.json')
     .then(toursteps => {
@@ -38,4 +39,4 @@ function getBarChartData(complexity, showSource, doTour, selector){
 
 // getBarChartData('simple', true, true)
 // getBarChartData('moderate', true, true)
-// getBarChartData('complex', true, true)
+getBarChartData('complex', true, true)
