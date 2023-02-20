@@ -13,7 +13,8 @@ function createTour(type, steps){
       popperOptions: { // moves tutorial box to the left
         modifiers: [{ name: 'offset', options: { offset: [0,  52] } }]
       }
-    }
+    },
+    exitOnEsc: false
   })
 
   startTour(tour, steps[type])
