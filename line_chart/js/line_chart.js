@@ -2,10 +2,17 @@ class LineChart {
 
     constructor(props) {
         // global metadata
-        this.complex = props.isComplex;
-        this.interactive = !this.complex ? false : props.isInteractive;
+        if (props.complexity === 'simple') {
+            this.complex = false;
+            this.interactive = false;
+        } else if (props.complexity === 'moderate') {
+            this.complex = true;
+            this.interactive = false;
+        } else {
+            this.complex = true;
+            this.interactive = true;
+        }
         this.source = props.source;
-
         this.data = props.data;
         // create a list of keys
         this.keys = ["Ages 80+", "Ages 50-79", "Ages 18-49"]
@@ -25,18 +32,10 @@ class LineChart {
             6: 'Feb'
         }
 
-        this.color1 = d3.scaleOrdinal()
-            .domain(this.keys)
-            .range(['#9e3a26', '#ef701b', '#f4d166']);
-
-        this.color2 = d3.scaleOrdinal()
-            .domain(this.keys)
-            .range(['#04386b', '#0984ea', '#7dc9f5']);
-
         this.buildHtml(props.selector);
     }
 
-    buildHtml(selector=null) {
+    buildHtml(selector = null) {
         console.log('building html')
         let vis = this;
         let container = selector
@@ -52,12 +51,11 @@ class LineChart {
         mc.append('div').attr('class', 'title')
             .append('h3').attr('id', 'chart-title').text('Weekly count of vaccinated & unvaccinated individuals who caught Covid-19, split by age');
         mc.append('br');
-        mc.append('div').attr('class', 'subtitle').text('Apr 2021-Feb 2022')
-        mc.append('br');
-        mc.append('div').attr('class', 'helper').text('*Hover over the lines to explore further and brush the timeline on the right to filter the data');
+        mc.append('div').attr('class', 'helper').text(vis.complex ? '*Hover over the lines to explore further and brush the timeline on the right to filter the data' :
+            '*Hover over the lines to explore further');
         mc.append('br');
         mc.append('div').attr('id', 'chart');
-        if(vis.source) mc.append('div').append('a').attr('target','_').attr('href','https://data.cdc.gov/Public-Health-Surveillance/Rates-of-COVID-19-Cases-or-Deaths-by-Age-Group-and/3rge-nu2a/data').attr('class', 'source').text('Source: Centers for Disease Control and Prevention');
+        if (vis.source) mc.append('div').append('a').attr('target', '_').attr('href', 'https://data.cdc.gov/Public-Health-Surveillance/Rates-of-COVID-19-Cases-or-Deaths-by-Age-Group-and/3rge-nu2a/data').attr('class', 'source').text('Source: Centers for Disease Control and Prevention');
 
         if (this.interactive) {
             let time = lc.append('div').attr('id', 'time_filter_div')
