@@ -39,4 +39,4 @@ function getBarChartData(complexity, showSource, doTour, selector){
 
 // getBarChartData('simple', true, true)
 // getBarChartData('moderate', true, true)
-getBarChartData('complex', true, true)
+// getBarChartData('complex', true, true)
