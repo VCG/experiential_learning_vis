@@ -3,7 +3,7 @@ var chart
 number_format_line = d3.format(".2d")
 
 function getLineChartData(complexity, showSource, doTour, selector) {
-    return d3.json('https://vcg.github.io/trust_in_science/bar_chart/data/toursteps.json') //TODO ERIC: ADAPT TO LINE CHART
+    return d3.json('https://vcg.github.io/trust_in_science/line_chart/data/toursteps.json')
         .then(toursteps => {
             d3.csv("https://vcg.github.io/trust_in_science/line_chart/data/line_chart_complex.csv", (row, i) => {
                 row.Vax_18_49 = number_format_line(+row.Vax_18_49);

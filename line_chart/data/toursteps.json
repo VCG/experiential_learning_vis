@@ -3,17 +3,17 @@
       {
         "id": "#chart",
         "location": "bottom",
-        "title": "Bar Chart Tour",
-        "text": "Before we show you the interactive bar chart, we will first guide you through the main components of the visualization.",
+        "title": "Line Chart Tour",
+        "text": "Before we show you the line chart, we will first guide you through the main components of the visualization.",
         "class": "start-step",
         "disabled": false
       },
       {
         "id": "#chart",
         "location": "bottom",
-        "title": "Bar Chart Visualization",
-        "text": "This is the main visualization. Once you filter the data, all changes will directly show up here.<br> <b>Your turn:</b> Hover over a bar to see details about that bar.",
-        "class": "main-vis-step",
+        "title": "Line Chart Visualization",
+        "text": "This is the main visualizations.<br> <b>Your turn:</b> Hover over the lines to see details.",
+        "class": "first-vis-step",
         "disabled": false
       },
       {
@@ -41,10 +41,10 @@
         "disabled": true
       },
       {
-        "id": ".legend",
+        "id": "#legend",
         "location": "left",
         "title": "This is the legend.",
-        "text": "You can use this legend to highlight different age groups!<br> <b>Your turn:</b> Try hovering over an age group to highlight that group.<br><br> That\"s it, have fun exploring the data!",
+        "text": "The legend explains you which color represents which parts of the data",
         "class": "legend-step",
         "disabled": false
       }
@@ -53,24 +53,24 @@
       {
         "id": "#chart",
         "location": "bottom",
-        "title": "Bar Chart Tour",
-        "text": "Before we show you the bar chart, we will first guide you through the main components of the visualization.",
+        "title": "Line Chart Tour",
+        "text": "Before we show you the line chart, we will first guide you through the main components of the visualization.",
         "class": "start-step",
         "disabled": false
       },
       {
         "id": "#chart",
         "location": "bottom",
-        "title": "Bar Chart Visualization",
-        "text": "This is the main visualization.<br> <b>Your turn:</b> Hover over a bar to see details about that bar.",
-        "class": "main-vis-step",
+        "title": "Line Chart Visualization",
+        "text": "This is the main visualizations.<br> <b>Your turn:</b> Hover over the lines to see details.",
+        "class": "first-vis-step",
         "disabled": false
       },
       {
-        "id": ".legend",
+        "id": "#legend",
         "location": "left",
         "title": "This is the legend.",
-        "text": "You can use this legend to highlight different age groups!<br> <b>Your turn:</b> Try hovering over an age group to highlight that group.<br><br> That\"s it, have fun exploring the data!",
+        "text": "The legend explains you which color represents which parts of the data",
         "class": "legend-step",
         "disabled": false
       }
@@ -79,25 +79,25 @@
       {
         "id": "#chart",
         "location": "bottom",
-        "title": "Bar Chart Tour",
-        "text": "Before we show you the bar chart, we will first guide you through the main components of the visualization.",
+        "title": "Line Chart Tour",
+        "text": "Before we show you the line chart, we will first guide you through the main components of the visualization.",
         "class": "start-step",
         "disabled": false
       },
       {
         "id": "#chart",
         "location": "bottom",
-        "title": "Bar Chart Visualization",
-        "text": "This is the first of the two main visualizations.<br> <b>Your turn:</b> Hover over a bar to see details about that bar.",
+        "title": "Line Chart Visualization",
+        "text": "This is the main visualizations.<br> <b>Your turn:</b> Hover over the lines to see details.",
         "class": "first-vis-step",
         "disabled": false
       },
       {
-        "id": "#chart2",
-        "location": "top",
-        "title": "Bar Chart Visualization",
-        "text": "This is the second of the two main visualizations.<br> <b>Your turn:</b> Hover over a bar to see details about that bar. <br><br> That\"s it, have fun exploring the data!",
-        "class": "second-vis-step",
+        "id": "#legend",
+        "location": "left",
+        "title": "This is the legend.",
+        "text": "The legend explains you which color represents which parts of the data",
+        "class": "legend-step",
         "disabled": false
       }
     ]

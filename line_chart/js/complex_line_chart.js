@@ -56,7 +56,7 @@ class LineChart {
 
 
         let mc = container.append('div').attr('class', 'col-8 main-content'),
-            lc = container.append('div').attr('class', 'col-4 legend-content-line')
+            lc = container.append('div').attr('class', 'col-4 legend-content-line').attr('id', 'legend')
 
         mc.append('div').attr('class', 'title')
             .append('h3').attr('id', 'chart-title').text('Weekly count of vaccinated & unvaccinated individuals who caught Covid-19, split by age');
@@ -551,12 +551,14 @@ class LineChart {
                         startDate: startDate.toISOString().split('T')[0],
                         endDate: endDate.toISOString().split('T')[0]
                     })
+                    d3.select(vis.brush_exists ? '.move-step' : '.brush-step').property('disabled', false).classed('disabled-button', false)
                     vis.brush_exists = true;
                 }else{
                     vis.provData.logEvent({
                         time: Date.now(),
                         label: 'cleared_brush'
                     })
+                    d3.select('.clear-step').property('disabled', false).classed('disabled-button', false)
                     vis.brush_exists = false;
                 }
                 //update the date values on the brush scale
