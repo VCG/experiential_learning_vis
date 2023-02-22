@@ -14,6 +14,7 @@ class LineChart {
         }
         this.source = props.source;
         this.data = props.data;
+        this.brush_exists = false;
         // create a list of keys
         this.keys = ["Ages 80+", "Ages 50-79", "Ages 18-49"]
         this.months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
@@ -38,6 +39,10 @@ class LineChart {
         this.provData = new ProvenanceData('line chart', props.complexity)
 
         this.buildHtml(props.selector);
+    }
+
+    getProvenance() {
+        return this.provData.getProvenance()
     }
 
     buildHtml(selector = null) {
@@ -414,6 +419,7 @@ class LineChart {
                 vis.tooltip.attr("display", "null");
             })
             .on("mouseout", function (event, d) {
+                clearTimeout(vis.trigger)
                 vis.tooltip.attr("display", "none");
             })
             .on("mousemove", mousemove);
@@ -429,6 +435,23 @@ class LineChart {
             let hang_right = false
             let right = vis.data[index];
             let closest = right;
+
+            // Provenance:
+            if (vis.hover_start) {
+                vis.provData.logEvent({
+                    time: vis.hover_start,
+                    label: 'hovered',
+                    timeHovered: Date.now() - vis.hover_start,
+                    week: closest.Max_Week_Date1
+                })
+                vis.hover_start = null;
+            }
+            clearTimeout(vis.trigger)
+            vis.trigger = setTimeout(() => {
+                vis.hover_start = Date.now() - 1000
+            }, 1000);
+
+
             let x_right = vis.x_time(right.date);
             if (Math.abs(x_right - x_coordinate) < 10) {
                 closest = right;
@@ -516,12 +539,25 @@ class LineChart {
         let brush = d3.brushX()
             .extent([[0, 0], [width, height]])
             .on("brush", brushed)
-            .on("brush end", function (e) {
+            .on("end", function (e) {
                 let startDate = xTime.invert(0)
                 let endDate = xTime.invert(width)
-                if (e.selection) { //if the user cancels selection back to whole range
+                if (e.selection) {
                     startDate = xTime.invert(e.selection[0]);
                     endDate = xTime.invert(e.selection[1]);
+                    vis.provData.logEvent({
+                        time: Date.now(),
+                        label: vis.brush_exists ? 'moved_brush' : 'started_brush',
+                        startDate: startDate.toISOString().split('T')[0],
+                        endDate: endDate.toISOString().split('T')[0]
+                    })
+                    vis.brush_exists = true;
+                }else{
+                    vis.provData.logEvent({
+                        time: Date.now(),
+                        label: 'cleared_brush'
+                    })
+                    vis.brush_exists = false;
                 }
                 //update the date values on the brush scale
                 d3.select('#left-date').text(startDate.toISOString().split('T')[0])
