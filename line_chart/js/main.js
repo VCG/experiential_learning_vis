@@ -1,7 +1,5 @@
 var chart
 
-number_format_line = d3.format(".2d")
-
 function getLineChartData(complexity, showSource, doTour, selector) {
     return d3.json('https://vcg.github.io/trust_in_science/line_chart/data/toursteps.json')
         .then(toursteps => {

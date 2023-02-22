@@ -4,7 +4,7 @@
         "id": "#chart",
         "location": "bottom",
         "title": "Bar Chart Tour",
-        "text": "Before we show you the interactive bar chart, we will first guide you through the main components of the visualization.",
+        "text": "We will show you an interactive bar chart. But before that, let's walk you through the main components of the visualization.",
         "class": "start-step",
         "disabled": false
       },
@@ -12,7 +12,7 @@
         "id": "#chart",
         "location": "bottom",
         "title": "Bar Chart Visualization",
-        "text": "This is the main visualization. Once you filter the data, all changes will directly show up here.<br> <b>Your turn:</b> Hover over a bar to see details about that bar.",
+        "text": "This is the interactive bar chart. You can adjust the filter for the data and the changes will show up here. <br> <b>Your turn:</b> Hover over a bar to see details about that bar.",
         "class": "main-vis-step",
         "disabled": false
       },
@@ -20,7 +20,7 @@
         "id": "#time_filter_div",
         "location": "left",
         "title": "This is a time filter!",
-        "text": "You can use this filter to brush and select a subset of weeks. Only the data of the selected weeks will be shown in the visualization.<br> <b>Your turn:</b> Try creating a filter by clicking and dragging over a set of weeks.",
+        "text": "The x-axis shows time in weeks. You can use this filter to select a subset of weeks. Only the data of the selected weeks will be shown in the visualization.<br> <b>Your turn:</b> To proceed to the next step, create a filter by clicking and dragging over a set of weeks.",
         "class": "brush-step",
         "disabled": true
       },
@@ -28,7 +28,7 @@
         "id": "#time_filter_div",
         "location": "left",
         "title": "This is a time filter!",
-        "text": "<b>Your turn:</b> Now try moving the filter you have created.",
+        "text": "<b>Your turn:</b> Move the filter you have created.",
         "class": "move-step",
         "disabled": true
       },
@@ -36,7 +36,7 @@
         "id": "#time_filter_div",
         "location": "left",
         "title": "This is a time filter!",
-        "text": "<b>Your turn:</b> Now, click on the time filter outside of the selection you created to clear the filter.",
+        "text": "<b>Your turn:</b> Click on the time filter outside of the selection area (or press the 'Esc' key) to clear the filter.",
         "class": "clear-step",
         "disabled": true
       },
@@ -44,7 +44,7 @@
         "id": ".legend",
         "location": "left",
         "title": "This is the legend.",
-        "text": "You can use this legend to highlight different age groups!<br> <b>Your turn:</b> Try hovering over an age group to highlight that group.<br><br> That\"s it, have fun exploring the data!",
+        "text": "You can use this legend to highlight different age groups.<br> <b>Your turn:</b> Hover over an age group to highlight that group.<br><br> That\"s it, have fun exploring the data!",
         "class": "legend-step",
         "disabled": false
       }
@@ -54,7 +54,7 @@
         "id": "#chart",
         "location": "bottom",
         "title": "Bar Chart Tour",
-        "text": "Before we show you the bar chart, we will first guide you through the main components of the visualization.",
+        "text": "We will show you a stacked bar chart. But before that, let's walk you through the main components of the visualization.",
         "class": "start-step",
         "disabled": false
       },
@@ -62,7 +62,7 @@
         "id": "#chart",
         "location": "bottom",
         "title": "Bar Chart Visualization",
-        "text": "This is the main visualization.<br> <b>Your turn:</b> Hover over a bar to see details about that bar.",
+        "text": "This is the stacked bar chart.<br> <b>Your turn:</b> Hover over a bar to see details about that bar.",
         "class": "main-vis-step",
         "disabled": false
       },
@@ -70,7 +70,7 @@
         "id": ".legend",
         "location": "left",
         "title": "This is the legend.",
-        "text": "You can use this legend to highlight different age groups!<br> <b>Your turn:</b> Try hovering over an age group to highlight that group.<br><br> That\"s it, have fun exploring the data!",
+        "text": "You can use this legend to highlight different age groups.<br> <b>Your turn:</b> Hover over an age group to highlight that group.<br><br> That\"s it, have fun exploring the data!",
         "class": "legend-step",
         "disabled": false
       }
@@ -80,7 +80,7 @@
         "id": "#chart",
         "location": "bottom",
         "title": "Bar Chart Tour",
-        "text": "Before we show you the bar chart, we will first guide you through the main components of the visualization.",
+        "text": "We will show you two bar charts. But before that, let’s walk you through the main components of the visualization.",
         "class": "start-step",
         "disabled": false
       },
@@ -88,7 +88,7 @@
         "id": "#chart",
         "location": "bottom",
         "title": "Bar Chart Visualization",
-        "text": "This is the first of the two main visualizations.<br> <b>Your turn:</b> Hover over a bar to see details about that bar.",
+        "text": "This is the first bar chart.<br> <b>Your turn:</b> Hover over a bar to see details about that bar.",
         "class": "first-vis-step",
         "disabled": false
       },
@@ -96,9 +96,12 @@
         "id": "#chart2",
         "location": "top",
         "title": "Bar Chart Visualization",
-        "text": "This is the second of the two main visualizations.<br> <b>Your turn:</b> Hover over a bar to see details about that bar. <br><br> That\"s it, have fun exploring the data!",
+        "text": "This is the second bar chart.<br> <b>Your turn:</b> Hover over a bar to see details about that bar. <br><br> That\"s it, have fun exploring the data!",
         "class": "second-vis-step",
         "disabled": false
       }
     ]
   }
+ 
+ 
+ 
