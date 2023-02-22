@@ -569,7 +569,7 @@ class LineChart {
 
         vis.tooltip.append("rect")
             .attr("width", 200)
-            .attr("height", vis.height - (this.complex ? 100 : 250))
+            .attr("height", !this.complex ? 100 : 250)
             .attr("x", 0)
             .attr("y", 0)
             .style("fill", "white")
@@ -578,7 +578,7 @@ class LineChart {
 
         vis.tooltip.append("rect")
             .attr("width", 200)
-            .attr("height", vis.height - (this.complex ? 100 : 250))
+            .attr("height", !this.complex ? 100 : 250)
             .attr("x", -200)
             .attr("y", 0)
             .style("fill", "white")
