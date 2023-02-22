@@ -38,6 +38,6 @@ function getLineChartData(complexity, showSource, doTour, selector) {
         });
 }
 
-getLineChartData('simple', true, false)
+//getLineChartData('simple', true, false)
 //getLineChartData('moderate', true, true)
 //getLineChartData('complex', true, false)
