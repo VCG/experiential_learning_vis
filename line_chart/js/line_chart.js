@@ -32,6 +32,11 @@ class LineChart {
             6: 'Feb'
         }
 
+        // provenance metadata
+        this.trigger = null;
+        this.hover_start = null;
+        this.provData = new ProvenanceData('line chart', props.complexity)
+
         this.buildHtml(props.selector);
     }
 
