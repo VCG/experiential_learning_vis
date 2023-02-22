@@ -404,7 +404,7 @@ class LineChart {
             .style("border-radius", "2px")
             .style("padding", "12px")
             .style("color", "#0c0c0c")
-            .style('font-size', '14px')
+            .style('font-size', '11px')
             .style("position", "absolute")
             .style("box-shadow", "2px 2px 4px lightgrey")
             .style("padding", "10px")
@@ -598,6 +598,7 @@ class LineChart {
             .attr("y", 10)
             .attr("font-family", "Segoe UI")
             .attr('font-weight', 'bold')
+            .style("font-size", '14px')
             .style("fill", "black");
 
         if (this.complex) {
@@ -607,6 +608,7 @@ class LineChart {
                 .attr("y", 30)
                 .attr("font-family", "Segoe UI")
                 .attr('font-weight', 'bold')
+                .style("font-size", '12px')
                 .style("fill", "black");
         }
 
@@ -615,9 +617,10 @@ class LineChart {
             .attr("x", 10)
             .attr("y", this.complex ? 60 : 30)
             .attr("font-family", "Segoe UI")
+            .attr('font-size', '14px')
             .style("fill", "black")
             .attr('font-weight', 'bold')
-            .style("font-size", '14');
+            .style("font-size", '12px');
 
         vis.text4 = vis.tooltip.append("text")
             .attr("class", "tooltip-text")
@@ -625,7 +628,7 @@ class LineChart {
             .attr("y", this.complex ? 80 : 45)
             .style("fill", this.complex ? "#9e3a26" : "orange")
             .attr("font-family", "Segoe UI")
-            .style("font-size", '13');
+            .style("font-size", '11px');
 
         if (this.complex) {
             vis.text5 = vis.tooltip.append("text")
@@ -634,7 +637,7 @@ class LineChart {
                 .attr("y", 100)
                 .style("fill", "#ef701b")
                 .attr("font-family", "Segoe UI")
-                .style("font-size", '13');
+                .style("font-size", '11px');
 
             vis.text6 = vis.tooltip.append("text")
                 .attr("class", "tooltip-text")
@@ -642,7 +645,7 @@ class LineChart {
                 .attr("y", 120)
                 .style("fill", "#f4d166")
                 .attr("font-family", "Segoe UI")
-                .style("font-size", '13');
+                .style("font-size", '11px');
         }
         vis.text7 = vis.tooltip.append("text")
             .attr("class", "tooltip-text")
@@ -651,7 +654,7 @@ class LineChart {
             .style("fill", "black")
             .attr('font-weight', 'bold')
             .attr("font-family", "Segoe UI")
-            .style("font-size", '14');
+            .style("font-size", '11px');
 
         vis.text8 = vis.tooltip.append("text")
             .attr("class", "tooltip-text")
@@ -659,7 +662,7 @@ class LineChart {
             .attr("y", this.complex ? 180 : 85)
             .style("fill", this.complex ? "#04386b" : "blue")
             .attr("font-family", "Segoe UI")
-            .style("font-size", '13');
+            .style("font-size", '11px');
 
         if (this.complex) {
             vis.text9 = vis.tooltip.append("text")
@@ -668,7 +671,7 @@ class LineChart {
                 .attr("y", 200)
                 .style("fill", "#0984ea")
                 .attr("font-family", "Segoe UI")
-                .style("font-size", '13');
+                .style("font-size", '11px');
 
             vis.text10 = vis.tooltip.append("text")
                 .attr("class", "tooltip-text")
@@ -676,7 +679,7 @@ class LineChart {
                 .attr("y", 220)
                 .style("fill", "#7dc9f5")
                 .attr("font-family", "Segoe UI")
-                .style("font-size", '13');
+                .style("font-size", '11px');
         }
     }
 
