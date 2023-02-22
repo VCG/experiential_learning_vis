@@ -33,7 +33,6 @@
     margin-left: 70px;
     font-size: 12px;
     font-family: Segoe UI
-    
 }
 
 .axisMonths line{
@@ -89,7 +88,7 @@ h3 {
 .brush .extent {
     fill-opacity: .125;
     shape-rendering: crispEdges;
-   ;
+;
 }
 
 .legend {
@@ -135,4 +134,31 @@ h3 {
 
 .disabled-button {
     background-color: grey;
+}
+
+
+.tooltip-group{
+    z-index: 4;
+}
+
+.tool-rect-background {
+    -webkit-filter: drop-shadow( 3px 3px 2px rgba(0, 0, 0, .3));
+    filter: drop-shadow( 3px 3px 2px rgba(0, 0, 0, .3));
+}
+
+.tool-rect-background-r {
+    -webkit-filter: drop-shadow( 3px 3px 2px rgba(0, 0, 0, .3));
+    filter: drop-shadow( 3px 3px 2px rgba(0, 0, 0, .3));
+}
+
+.tool-rect-background-l {
+    -webkit-filter: drop-shadow( 3px 3px 2px rgba(0, 0, 0, .3));
+    filter: drop-shadow( 3px 3px 2px rgba(0, 0, 0, .3));
+}
+
+
+.legend-content-line {
+    float: right;
+    font-size: 12px;
+    margin-top: 150px;
 }

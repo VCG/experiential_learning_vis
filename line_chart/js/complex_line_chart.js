@@ -51,7 +51,7 @@ class LineChart {
 
 
         let mc = container.append('div').attr('class', 'col-8 main-content'),
-            lc = container.append('div').attr('class', 'col-4 legend-content')
+            lc = container.append('div').attr('class', 'col-4 legend-content-line')
 
         mc.append('div').attr('class', 'title')
             .append('h3').attr('id', 'chart-title').text('Weekly count of vaccinated & unvaccinated individuals who caught Covid-19, split by age');
