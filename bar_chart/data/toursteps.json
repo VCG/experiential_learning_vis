@@ -20,7 +20,7 @@
         "id": "#time_filter_div",
         "location": "left",
         "title": "This is a time filter!",
-        "text": "The x-axis shows time in weeks. You can use this filter to select a subset of weeks. Only the data of the selected weeks will be shown in the visualization.<br> <b>Your turn:</b> To proceed to the next step, create a filter by clicking and dragging over a set of weeks.",
+        "text": "The x-axis shows time in weeks. You can use this filter to select a subset of weeks. Only the data of the selected weeks will be shown in the visualization.<br><br> Note: When you select a filter, each bar will be broken down by age group for both vaccinated and unvaccinated people.<br><br> <b>Your turn:</b> To proceed to the next step, create a filter by clicking and dragging over a set of weeks.",
         "class": "brush-step",
         "disabled": true
       },
