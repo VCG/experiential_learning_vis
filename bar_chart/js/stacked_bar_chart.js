@@ -454,14 +454,6 @@
             d3.select('.clear-step').property('disabled', false).classed('disabled-button', false)
         }
 
-        document.addEventListener('keydown', function(e) {
-            if(e.key === "Escape") {
-                vis.adjust_brush({selection: [0,0]})
-                d3.select('.selection').attr('x', 0).attr('width',0)
-                vis.clear_brush_func('Escape')
-            }
-        })
-
         let brush = d3.brushX()
             .extent([[0,0], [width, height]])
             .on('start', function(e){
@@ -490,7 +482,7 @@
                 }
             });
 
-        d3.select("#brush-chart").append("svg")
+        let brushg = d3.select("#brush-chart").append("svg")
             .attr("width", width)
             .attr("height", height)
             .attr('class', 'brush-axis')
@@ -500,6 +492,13 @@
                 .attr("width", width)
                 .attr("height", height)
                 .call(brush)
+        
+        document.addEventListener('keydown', function(e) {
+            if(e.key === "Escape") {
+                brush.move(brushg, [0,0])
+                vis.clear_brush_func('Escape')
+            }
+        })
         
         d3.select('.brush-axis').selectAll('text').attr('transform', 'translate(-17,8)rotate(-45)')
     }
