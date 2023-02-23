@@ -44,7 +44,7 @@
         "id": ".legend",
         "location": "left",
         "title": "This is the legend.",
-        "text": "You can use this legend to highlight different age groups.<br> <b>Your turn:</b> Hover over an age group to highlight that group.<br><br> That\"s it, have fun exploring the data!",
+        "text": "Note that this legend will change when interacting with the filter.<br><br> That\"s it, have fun exploring the data!",
         "class": "legend-step",
         "disabled": false
       }
@@ -70,7 +70,7 @@
         "id": ".legend",
         "location": "left",
         "title": "This is the legend.",
-        "text": "You can use this legend to highlight different age groups.<br> <b>Your turn:</b> Hover over an age group to highlight that group.<br><br> That\"s it, have fun exploring the data!",
+        "text": "The rate of unvaccinated people is presented in orange, and the rate of vaccinated people is presented in blue.<br><br> That\"s it, have fun exploring the data!",
         "class": "legend-step",
         "disabled": false
       }
