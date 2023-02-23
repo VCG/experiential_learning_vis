@@ -452,7 +452,6 @@
                 using: method
             })
             d3.select('.clear-step').property('disabled', false).classed('disabled-button', false)
-            vis.brush_exists = false;
         }
 
         document.addEventListener('keydown', function(e) {
@@ -465,26 +464,29 @@
 
         let brush = d3.brushX()
             .extent([[0,0], [width, height]])
+            .on('start', function(e){
+                vis.curr_brush = e.selection[0]
+            })
             .on("brush", function(e) {
                 vis.adjust_brush(e)
             })
             .on('end', function(e){
                 let [startDate,endDate] = vis.adjust_brush(e)
                 if(startDate < endDate){
+                    vis.brush_exists = vis.curr_brush === vis.last_brush;
                     if(vis.whole_data){
                         vis.clear_brush_func('Click')
                     } 
                     else {
                         vis.provData.logEvent({
                             time: Date.now(),
-                            label: vis.brush_exists ? 'moved_brush' : 'started_brush',
+                            label: vis.is_brush_start ? 'started_brush' : 'moved_brush',
                             startDate: startDate.toISOString().split('T')[0],
                             endDate: endDate.toISOString().split('T')[0]
                         })
                         d3.select(vis.brush_exists ? '.move-step' : '.brush-step').property('disabled', false).classed('disabled-button', false)
-                        vis.brush_exists = true;
                     }
-                    
+                    vis.last_brush = e.selection[0];
                 }
             });
 
