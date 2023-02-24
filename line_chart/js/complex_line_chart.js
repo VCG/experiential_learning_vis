@@ -33,12 +33,19 @@ class LineChart {
             6: 'Feb'
         }
 
+        this.buildHtml(props.selector)
+
         // provenance metadata
         this.trigger = null;
         this.hover_start = null;
         this.provData = new ProvenanceData('line chart', props.complexity)
+        // set the dimensions and margins of the graph
+        this.margin = {top: 20, right: 20, bottom: 100, left: 70};
+        this.totalWidth = d3.select('#chart').node().getBoundingClientRect().width
+        this.width = this.totalWidth - this.margin.left - this.margin.right;
+        this.height = this.totalWidth / 1.5 - this.margin.top - this.margin.bottom;
 
-        this.buildHtml(props.selector);
+        this.displayData = this.data
     }
 
     getProvenance() {
@@ -115,15 +122,6 @@ class LineChart {
 
     initVis(id) {
         let vis = this;
-        vis.complex = this.complex;
-        // set the dimensions and margins of the graph
-        vis.margin = {top: 20, right: 20, bottom: 100, left: 70};
-        vis.totalWidth = d3.select('#chart').node().getBoundingClientRect().width
-        if (vis.totalWidth < 0) console.log(vis.totalWidth)
-        vis.width = vis.totalWidth - vis.margin.left - vis.margin.right;
-        if (vis.width < 0) console.log(vis.width)
-        vis.height = vis.totalWidth / 1.5 - vis.margin.top - vis.margin.bottom;
-        if (vis.height < 0) console.log(vis.height)
 
         vis.svg = d3.select("#chart")
             .append("svg")
@@ -136,39 +134,26 @@ class LineChart {
         vis.svg.append("g")
             .attr("transform", `translate(0, ${vis.height})`)
             .attr("class", "x-axis")
-            // .attr("class", "axisRed")
             .selectAll("text")
             .style("text-anchor", "end")
-            // .attr("dx", "2em")
-            .attr("dy", "20px")
-            .style("font-size", '12')
-            .attr("font-family", "Segoe UI")
-            .attr("transform", "rotate(0)");
+            .attr("dx", "0.5em")
+            .attr("dy", "1em")
+            .style('font-size', '12px');
 
         vis.svg.append("g")
             .attr("transform", `translate(0, ${vis.height})`)
-            .attr("class", "x-axis2 axisTwo")
+            .attr("class", "x-axis2")
             .selectAll("text")
             .style("text-anchor", "end")
-            // .attr("dx", "0.25em")
-            .attr("dy", "20px")
-            .style("font-size", '12')
-            .attr("font-family", "Segoe UI")
-            .attr("transform", "rotate(0)");
+            .attr("dx", "0.5em")
+            .attr("dy", "1em")
+            .style('font-size', '12px');
 
 
         vis.svg.append("g").attr("class", "y-axis");
 
         let fontsize = Math.max(11, vis.width / 36)
 
-        //x axis label
-        vis.svg.append("text")
-            .attr("text-anchor", "middle")
-            .attr("font-size", "12")
-            .attr("x", vis.width / 2)
-            .attr("y", vis.height + 70)
-            .attr("font-size", fontsize)
-            .text("Week");
 
         //unvaccinated legend
         vis.svg.selectAll(".legend")
@@ -219,14 +204,25 @@ class LineChart {
     updateVis() {
         let vis = this;
 
-        vis.svg.selectAll(".line").remove();
-        vis.svg.selectAll(".grid").remove();
-
-        vis.x_time = d3.scaleTime()
-            .domain(d3.extent(vis.displayData, function (d) {
+        this.x_time = d3.scaleTime()
+            .domain(d3.extent(this.displayData, function (d) {
                 return d.Max_Week_Date;
             }))
-            .range([0, vis.width])
+            .range([0, this.width])
+
+        this.x_axis = d3.axisBottom(this.x_time).tickFormat(
+            (d) => {
+                return `${parseMonthDay(d)}`
+            }
+        );
+        this.x_axis2 = d3.axisBottom(this.x_time).tickFormat(
+            (d,i) => {
+                let [_,mo,da] = d.toISOString().split('T')[0].split('-').map(d => +d)
+                return (i===0) ? '2021' : ((mo === 1 && da-7 < 0) ? '2022' : '')
+            });
+
+        vis.svg.selectAll(".line").remove();
+        vis.svg.selectAll(".grid").remove();
 
         // // Add Y axis
         vis.y = d3.scaleLinear()
@@ -235,15 +231,11 @@ class LineChart {
             }) + 500])
             .range([vis.height, 0]);
 
-        vis.test = vis.svg.selectAll(".x-axis").transition().call(d3.axisBottom(vis.x_time).ticks(d3.timeWeek));
-
-        vis.test.selectAll("text").remove();
-
-        vis.svg.selectAll(".x-axis2")
-            .transition()
-            .call(d3.axisBottom(vis.x_time).tickSize(10));
-
         vis.svg.selectAll(".y-axis").transition().call(d3.axisLeft(vis.y));
+        vis.svg.selectAll(".x-axis").transition().duration(100).call(vis.x_axis);
+        vis.svg.selectAll(".x-axis2").transition().duration(100).call(vis.x_axis2);
+        vis.svg.select('.x-axis').selectAll('text').attr('transform','translate(-20,20) rotate(-45)')
+        vis.svg.select('.x-axis2').selectAll('text').attr('transform','translate(-20,40)')
 
         //grey y gridlines
         vis.make_x_gridlines = function () {
