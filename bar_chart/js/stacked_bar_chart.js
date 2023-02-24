@@ -472,7 +472,7 @@
                     else {
                         vis.provData.logEvent({
                             time: Date.now(),
-                            label: vis.is_brush_start ? 'started_brush' : 'moved_brush',
+                            label: !vis.brush_exists ? 'started_brush' : 'moved_brush',
                             startDate: startDate.toISOString().split('T')[0],
                             endDate: endDate.toISOString().split('T')[0]
                         })
