@@ -67,10 +67,8 @@ class LineChart {
 
         mc.append('div').attr('class', 'title')
             .append('h3').attr('id', 'chart-title').text('Weekly count of vaccinated & unvaccinated individuals who caught Covid-19, split by age');
-        mc.append('br');
         mc.append('div').attr('class', 'helper').text(vis.complex ? '*Hover over the lines to explore further and brush the timeline on the right to filter the data' :
             '*Hover over the lines to explore further');
-        mc.append('br');
         mc.append('div').attr('id', 'chart');
         if (vis.source) mc.append('div').append('a').attr('target', '_').attr('href', 'https://data.cdc.gov/Public-Health-Surveillance/Rates-of-COVID-19-Cases-or-Deaths-by-Age-Group-and/3rge-nu2a/data').attr('class', 'source').text('Source: Centers for Disease Control and Prevention');
 
@@ -216,9 +214,9 @@ class LineChart {
             }
         );
         this.x_axis2 = d3.axisBottom(this.x_time).tickFormat(
-            (d,i) => {
-                let [_,mo,da] = d.toISOString().split('T')[0].split('-').map(d => +d)
-                return (i===0) ? '2021' : ((mo === 1 && da-7 < 0) ? '2022' : '')
+            (d, i) => {
+                let [_, mo, da] = d.toISOString().split('T')[0].split('-').map(d => +d)
+                return (i === 0) ? '2021' : ((mo === 1 && da - 7 < 0) ? '2022' : '')
             });
 
         vis.svg.selectAll(".line").remove();
@@ -234,8 +232,8 @@ class LineChart {
         vis.svg.selectAll(".y-axis").transition().call(d3.axisLeft(vis.y));
         vis.svg.selectAll(".x-axis").transition().duration(100).call(vis.x_axis);
         vis.svg.selectAll(".x-axis2").transition().duration(100).call(vis.x_axis2);
-        vis.svg.select('.x-axis').selectAll('text').attr('transform','translate(-20,20) rotate(-45)')
-        vis.svg.select('.x-axis2').selectAll('text').attr('transform','translate(-20,40)')
+        vis.svg.select('.x-axis').selectAll('text').attr('transform', 'translate(-20,20) rotate(-45)')
+        vis.svg.select('.x-axis2').selectAll('text').attr('transform', 'translate(-20,40)')
 
         //grey y gridlines
         vis.make_x_gridlines = function () {
@@ -528,62 +526,84 @@ class LineChart {
             .domain(d3.extent(vis.data, d => d.Max_Week_Date))
             .range([0, width]);
 
+        vis.clear_brush_func = function (method) {
+            vis.provData.logEvent({
+                time: Date.now(),
+                label: 'cleared_brush',
+                using: method
+            })
+            d3.select('.clear-step').property('disabled', false).classed('disabled-button', false)
+        }
+
+        vis.adjust_brush = function (e) {
+            let startDate = xTime.invert(0)
+            let endDate = xTime.invert(width)
+            if (e !== null && e.selection) {
+                startDate = xTime.invert(e.selection[0]);
+                endDate = xTime.invert(e.selection[1]);
+            }
+            //update the date values on the brush scale
+            d3.select('#left-date').text(startDate.toISOString().split('T')[0])
+            d3.select('#right-date').text(endDate.toISOString().split('T')[0])
+
+            vis.wrangleData(startDate, endDate);
+
+            return [startDate, endDate];
+        }
+
         let brush = d3.brushX()
             .extent([[0, 0], [width, height]])
-            .on("brush", brushed)
+            .on('start', function (e) {
+                vis.curr_brush = e.selection !== null ? e.selection[0] : null;
+            })
+            .on("brush", function (e) {
+                vis.adjust_brush(e)
+            })
             .on("end", function (e) {
-                let startDate = xTime.invert(0)
-                let endDate = xTime.invert(width)
-                if (e.selection) {
-                    startDate = xTime.invert(e.selection[0]);
-                    endDate = xTime.invert(e.selection[1]);
-                    vis.provData.logEvent({
-                        time: Date.now(),
-                        label: vis.brush_exists ? 'moved_brush' : 'started_brush',
-                        startDate: startDate.toISOString().split('T')[0],
-                        endDate: endDate.toISOString().split('T')[0]
-                    })
-                    d3.select(vis.brush_exists ? '.move-step' : '.brush-step').property('disabled', false).classed('disabled-button', false)
-                    vis.brush_exists = true;
-                }else{
-                    vis.provData.logEvent({
-                        time: Date.now(),
-                        label: 'cleared_brush'
-                    })
-                    d3.select('.clear-step').property('disabled', false).classed('disabled-button', false)
-                    vis.brush_exists = false;
+                let [startDate, endDate] = vis.adjust_brush(e)
+                if (startDate < endDate) {
+                    vis.brush_exists = vis.curr_brush === vis.last_brush;
+                    if (e.selection) {
+                        vis.provData.logEvent({
+                            time: Date.now(),
+                            label: vis.brush_exists ? 'moved_brush' : 'started_brush',
+                            startDate: startDate.toISOString().split('T')[0],
+                            endDate: endDate.toISOString().split('T')[0]
+                        })
+                        d3.select(vis.brush_exists ? '.move-step' : '.brush-step').property('disabled', false).classed('disabled-button', false)
+                        vis.brush_exists = true;
+                    } else {
+                        vis.clear_brush_func('click')
+                    }
                 }
-                //update the date values on the brush scale
-                d3.select('#left-date').text(startDate.toISOString().split('T')[0])
-                d3.select('#right-date').text(endDate.toISOString().split('T')[0])
-                vis.wrangleData(startDate, endDate);
+                vis.last_brush =  e.selection !== null ? e.selection[0] : null;
             });
 
         let svg = d3.select("#brush-chart").append("svg")
             .attr("width", width)
             .attr("height", height)
-            .call(xAxis);
+            .attr('class', 'brush-axis')
+            .call(xAxis)
 
         let brushg = svg.append("g")
             .attr("class", "brush")
             .attr("width", width)
             .attr("height", height)
-            .call(brush);
+            .call(brush)
+
+        document.addEventListener('keydown', function (e) {
+            if (e.key === "Escape") {
+                brush.move(brushg, null)
+                vis.adjust_brush(null)
+                vis.clear_brush_func('Escape')
+            }
+        })
 
         svg.append('line')
             .attr('x1', 0)
             .attr('y1', 0)
             .attr('x2', width)
             .attr('y2', 0)
-
-        function brushed() {
-            let range = d3.brushSelection(this);
-
-            d3.selectAll("span")
-                .text(function (d, i) {
-                    return Math.round(range[i]);
-                });
-        }
 
         //Init Brush Dates
         d3.select('#left-date').text(xTime.invert(0).toISOString().split('T')[0])
