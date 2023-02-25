@@ -30,7 +30,7 @@ function getBarChartData(complexity, showSource, doTour, selector){
             });
             chart.initVis('chart', true)
             if(complexity === 'simple') chart.initVis('chart2', false)
-            if(doTour) createTour(complexity, toursteps)
+            if(doTour) createTour(complexity, toursteps, chart.provData)
         });
     })
     

@@ -1,4 +1,4 @@
-function createTour(type, steps){
+function createTour(type, steps, provData=null){
   if(!(['complex','moderate','simple'].includes(type))) return;
 
   let tour = new Shepherd.Tour({
@@ -17,11 +17,11 @@ function createTour(type, steps){
     exitOnEsc: false
   })
 
-  startTour(tour, steps[type])
+  startTour(tour, steps[type], provData)
 }
 
 
-function startTour(tour,steps){
+function startTour(tour,steps, provData){
   for (i = 0; i < steps.length; i++) {
     btns = [];
     // no back button at the start
@@ -30,6 +30,11 @@ function startTour(tour,steps){
         text: 'Back',
         classes: 'shepherd-button-secondary',
         action: function () {
+          if(provData) provData.logEvent({
+            time: Date.now(),
+            label: 'tour_back',
+            step: i
+          })
           return tour.back();
         }
       });
@@ -41,6 +46,11 @@ function startTour(tour,steps){
         classes: 'shepherd-button-primary '+steps[i].class+(steps[i].disabled ? ' disabled-button': ''),
         disabled: steps[i].disabled,
         action: function () {
+          if(provData) provData.logEvent({
+            time: Date.now(),
+            label: 'tour_next',
+            step: i
+          })
           return tour.next();
         }
       });
@@ -49,6 +59,11 @@ function startTour(tour,steps){
         text: 'Close',
         classes: 'shepherd-button-primary',
         action: function () {
+          if(provData) provData.logEvent({
+            time: Date.now(),
+            label: 'tour_end',
+            step: i
+          })
           return tour.hide();
         }
       });
@@ -70,6 +85,11 @@ function startTour(tour,steps){
 
     tour.addStep(step);
   }
+
+  if(provData) provData.logEvent({
+    time: Date.now(),
+    label: 'tour_started'
+  })
 
   tour.start();
 }

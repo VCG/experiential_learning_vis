@@ -3,39 +3,31 @@
       {
         "id": "#chart",
         "location": "bottom",
-        "title": "Bar Chart Tour",
-        "text": "We will show you an interactive bar chart. But before that, let's walk you through the main components of the visualization.",
-        "class": "start-step",
-        "disabled": false
-      },
-      {
-        "id": "#chart",
-        "location": "bottom",
-        "title": "Bar Chart Visualization",
-        "text": "This is the interactive bar chart. You can adjust the filter for the data and the changes will show up here. <br> <b>Your turn:</b> Hover over a bar to see details about that bar.",
+        "title": "Interactive Stacked Bar Chart",
+        "text": "This is an interactive stacked bar chart. Each bar is a week of data. Orange bars represent <b>unvaccinated</b> people; blue bars represent <b>vaccinated</b> people.<br> <b>Your turn:</b> Hover over a bar to see the data for the corresponding week.",
         "class": "main-vis-step",
         "disabled": false
       },
       {
         "id": "#time_filter_div",
         "location": "left",
-        "title": "This is a time filter!",
-        "text": "The x-axis shows time in weeks. You can use this filter to select a subset of weeks. Only the data of the selected weeks will be shown in the visualization.<br> <b>Note:</b> When you select a filter, each bar will be broken down by age group for both vaccinated and unvaccinated people.<br><br> <b>Your turn:</b> To proceed to the next step, create a filter by clicking and dragging over a set of weeks.",
+        "title": "Creating a Time Filter",
+        "text": "The x-axis shows time in weeks. You can select a subset of weeks to filter the data shown in the visualization.<br><br> <b>Your turn:</b> To proceed to the next step, create a selection by clicking and dragging over a set of weeks.<br><br><b>Notice that, after filtering, each bar is broken down by age group.</b>",
         "class": "brush-step",
         "disabled": true
       },
       {
         "id": "#time_filter_div",
         "location": "left",
-        "title": "This is a time filter!",
-        "text": "<b>Your turn:</b> Move the filter you have created.",
+        "title": "Adjusting the Time Filter",
+        "text": "You can adjust the filter either by resizing the selection (on the left or right) or by dragging your current selection.<br><br><b>Your turn:</b> Adjust the filter you have created.",
         "class": "move-step",
         "disabled": true
       },
       {
         "id": "#time_filter_div",
         "location": "left",
-        "title": "This is a time filter!",
+        "title": "Clearing the Time Filter",
         "text": "<b>Your turn:</b> Click on the time filter outside of the selection area (or press the 'Esc' key) to clear the filter.",
         "class": "clear-step",
         "disabled": true
@@ -43,8 +35,8 @@
       {
         "id": ".legend",
         "location": "left",
-        "title": "This is the legend.",
-        "text": "Note that this legend will change when interacting with the filter.<br><br> That\"s it, have fun exploring the data!",
+        "title": "Legend",
+        "text": "Note that this legend will change to reflect the categories of the data in the visualization.<br><br> That's it, have fun exploring the data!",
         "class": "legend-step",
         "disabled": false
       }
@@ -53,24 +45,16 @@
       {
         "id": "#chart",
         "location": "bottom",
-        "title": "Bar Chart Tour",
-        "text": "We will show you a stacked bar chart. But before that, let's walk you through the main components of the visualization.",
-        "class": "start-step",
-        "disabled": false
-      },
-      {
-        "id": "#chart",
-        "location": "bottom",
-        "title": "Bar Chart Visualization",
-        "text": "This is the stacked bar chart.<br> <b>Your turn:</b> Hover over a bar to see details about that bar.",
+        "title": "Stacked Bar Chart",
+        "text": "This is a stacked bar chart. Each bar is a week of data. Orange bars represent <b>unvaccinated</b> people; blue bars represent <b>vaccinated</b> people.<br> <b>Your turn:</b> Hover over a bar to see the data for the corresponding week.",
         "class": "main-vis-step",
         "disabled": false
       },
       {
         "id": ".legend",
         "location": "left",
-        "title": "This is the legend.",
-        "text": "The rate of unvaccinated people is presented in orange, and the rate of vaccinated people is presented in blue.<br><br> That\"s it, have fun exploring the data!",
+        "title": "Legend",
+        "text": "That's it, have fun exploring the data!",
         "class": "legend-step",
         "disabled": false
       }
@@ -79,24 +63,16 @@
       {
         "id": "#chart",
         "location": "bottom",
-        "title": "Bar Chart Tour",
-        "text": "We will show you two bar charts. But before that, let’s walk you through the main components of the visualization.",
-        "class": "start-step",
-        "disabled": false
-      },
-      {
-        "id": "#chart",
-        "location": "bottom",
-        "title": "Bar Chart Visualization",
-        "text": "This is the first bar chart.<br> <b>Your turn:</b> Hover over a bar to see details about that bar.",
+        "title": "Unvaccinated Bar Chart",
+        "text": "This is a bar chart showing data for <b>unvaccinated</b> people.<br> <b>Your turn:</b> Hover over a bar to see the data for the corresponding week.",
         "class": "first-vis-step",
         "disabled": false
       },
       {
         "id": "#chart2",
         "location": "top",
-        "title": "Bar Chart Visualization",
-        "text": "This is the second bar chart.<br> <b>Your turn:</b> Hover over a bar to see details about that bar. <br><br> That\"s it, have fun exploring the data!",
+        "title": "Vaccinated Bar Chart",
+        "text": "This is a bar chart showing data for <b>vaccinated</b> people.<br> <b>Your turn:</b> Once again, you can hover over a bar to see the data for the corresponding week. <br><br> That's it, have fun exploring the data!",
         "class": "second-vis-step",
         "disabled": false
       }

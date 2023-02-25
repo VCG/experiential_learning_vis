@@ -7,7 +7,7 @@ class ProvenanceData {
     }
 
     logEvent(eventData){
-        eventData.time -= this.startTime;
+        if(eventData.time) eventData.time -= this.startTime;
         this.provenance.push(eventData);
     }
 
