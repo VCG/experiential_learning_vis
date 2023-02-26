@@ -104,7 +104,13 @@
                     .attr('target','_')
                     .attr('href','https://data.cdc.gov/Public-Health-Surveillance/Rates-of-COVID-19-Cases-or-Deaths-by-Age-Group-and/3rge-nu2a/data')
                     .attr('class', 'source')
-                    .text('Source: Centers for Disease Control and Prevention');
+                    .text('Source: Centers for Disease Control and Prevention')
+                    .on('click', function(){
+                        vis.provData.logEvent({
+                            time: Date.now(),
+                            label: 'source_clicked'
+                        })
+                    });
 
         if(vis.complexity != 'simple'){
             if(vis.complexity == 'complex'){
