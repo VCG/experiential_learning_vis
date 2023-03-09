@@ -1,6 +1,6 @@
 var chart
 
-function getBarChartData(complexity, showSource, doTour, selector){
+function getBarChartData(complexity, showSource, doTour, selector, changes=false){
     return d3.json('https://vcg.github.io/trust_in_science/bar_chart/data/toursteps.json')
     .then(toursteps => {
         d3.csv("https://vcg.github.io/trust_in_science/bar_chart/data/bar_chart_complex2.csv", (row,i) => {
@@ -26,11 +26,13 @@ function getBarChartData(complexity, showSource, doTour, selector){
                 data: data,
                 complexity: complexity,
                 source: showSource,
-                selector: selector
+                selector: selector,
+                changes: changes
             });
             chart.initVis('chart', true)
             if(complexity === 'simple') chart.initVis('chart2', false)
             if(doTour) createTour(complexity, toursteps, chart.provData)
+            trackFocus(chart.provData)
         });
     })
     
@@ -40,3 +42,4 @@ function getBarChartData(complexity, showSource, doTour, selector){
 // getBarChartData('simple', true, true)
 // getBarChartData('moderate', true, true)
 // getBarChartData('complex', true, true)
+// getBarChartData('complex', true, true, null, true)

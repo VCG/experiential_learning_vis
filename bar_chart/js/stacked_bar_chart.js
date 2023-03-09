@@ -6,6 +6,7 @@
         this.source = props.source;
         this.whole_data = true;
         this.brush_exists = false;
+        this.legend_changes = this.complexity == 'complex' && props.changes;
         
         // global data
         this.data = props.data;
@@ -44,7 +45,7 @@
         // color palette = one color per subgroup
         this.color = d3.scaleOrdinal()
             .domain(this.subgroups)
-            .range(['#0984ea','#0984ea','#0984ea', '#ef701b','#ef701b','#ef701b'])  
+            .range(!this.legend_changes ? ['#7dc9f5','#0984ea','#04386b', '#f4d166','#ef701b','#9e3a26'] : ['#0984ea','#0984ea','#0984ea', '#ef701b','#ef701b','#ef701b'])  
 
         // set the dimensions and margins of the graph
         this.margin = {top: 20, right: 20, bottom: 60, left: 70};
@@ -88,7 +89,12 @@
         if(vis.complexity != 'simple') lc = container.append('div').attr('class','col-4 legend-content')
         
         mc.append('div').attr('class', 'title')
-            .append('h3').attr('id','chart-title').text('Weekly count of vaccinated & unvaccinated individuals who caught Covid-19');
+            .append('h3')
+                .attr('id','chart-title')
+                .text(!vis.legend_changes
+                            ? 'Weekly count of vaccinated & unvaccinated individuals who caught Covid-19, split by age' 
+                            : 'Weekly count of vaccinated & unvaccinated individuals who caught Covid-19'
+                    );
         mc.append('div').append('p').attr('class','helper').text(
             '*Hover over the bars to explore further' + (vis.complexity == 'complex' ? ' and brush the timeline on the right to filter the data' : '')
             );
@@ -142,8 +148,10 @@
                 years.append('p').attr('class','alignLeft').text('2021')
                 years.append('p').attr('class','alignRight ').text('2022')
     
-                vac.style('display','none')
-                unv.style('display', 'none')
+                if(vis.legend_changes){
+                    vac.style('display','none')
+                    unv.style('display', 'none')
+                }
     
             } else {
                 leg = lc.append('div').attr('id','leg').attr('class','legend')
@@ -151,12 +159,15 @@
                 leg_row2 = leg.append('div')
             }
     
-            rows = vis.complexity == 'complex' ? [leg_row1, leg_row2,vac_row1,vac_row2,vac_row3,unv_row1,unv_row2,unv_row3] : [leg_row1,leg_row2]
+            rows = vis.complexity == 'complex' 
+                            ? vis.legend_changes 
+                                ? [leg_row1, leg_row2,vac_row1,vac_row2,vac_row3,unv_row1,unv_row2,unv_row3] 
+                                : [vac_row1,vac_row2,vac_row3,unv_row1,unv_row2,unv_row3] 
+                            : [leg_row1,leg_row2]
             rows = rows.map(d => d.attr('class','legend-row'))
-    
             rows.forEach((d,i) => {
-                d.append('div').attr('class','legend-value').append('svg').attr('id',vis.rids[i]).append('rect').style('fill',vis.rcolors[i])
-                d.append('div').attr('class','legend-label').text(vis.rlabels[i])
+                d.append('div').attr('class','legend-value').append('svg').attr('id',vis.rids[i+2*!vis.legend_changes]).append('rect').style('fill',vis.rcolors[i+2*!vis.legend_changes])
+                d.append('div').attr('class','legend-label').text(vis.rlabels[i+2*!vis.legend_changes])
             })
         }
     }
@@ -425,27 +436,28 @@
             let startDate = e.selection ? e.selection[1] - e.selection[0] >= 5 ? x.invert(e.selection[0]) : x.invert(0) : x.invert(0);
             let endDate = e.selection ? e.selection[1] - e.selection[0] >= 5 ? x.invert(e.selection[1]) : x.invert(width) : x.invert(width);
 
-            if(!e.selection || e.selection[1] - e.selection[0] < 5 ){
-                d3.select('#vax-leg').style('display','none')
-                d3.select('#unvax-leg').style('display','none')
-                d3.select('#leg').style('display','block')
-                d3.select('#chart-title').text('Weekly count of vaccinated & unvaccinated individuals who caught Covid-19')
-            } 
-            else{
-                d3.select('#vax-leg').style('display','block')
-                d3.select('#unvax-leg').style('display','block')
-                d3.select('#leg').style('display','none')
-                d3.select('#chart-title').text('Weekly count of vaccinated & unvaccinated individuals who caught Covid-19, split by age')
+            if(vis.legend_changes){
+                if(!e.selection || e.selection[1] - e.selection[0] < 5 ){
+                    d3.select('#vax-leg').style('display','none')
+                    d3.select('#unvax-leg').style('display','none')
+                    d3.select('#leg').style('display','block')
+                    d3.select('#chart-title').text('Weekly count of vaccinated & unvaccinated individuals who caught Covid-19')
+                } 
+                else{
+                    d3.select('#vax-leg').style('display','block')
+                    d3.select('#unvax-leg').style('display','block')
+                    d3.select('#leg').style('display','none')
+                    d3.select('#chart-title').text('Weekly count of vaccinated & unvaccinated individuals who caught Covid-19, split by age')
+                }
+
+                let twoColors = ['#0984ea','#0984ea','#0984ea', '#ef701b','#ef701b','#ef701b'],
+                sixColors = ['#7dc9f5','#0984ea','#04386b', '#f4d166','#ef701b','#9e3a26']
+
+                vis.color.range(e.selection ? ((e.selection[1] - e.selection[0] < 5) ? twoColors : sixColors) : twoColors)
             }
 
             d3.select('#left-date').text(startDate.toISOString().split('T')[0])
             d3.select('#right-date').text(endDate.toISOString().split('T')[0])
-
-            let twoColors = ['#0984ea','#0984ea','#0984ea', '#ef701b','#ef701b','#ef701b'],
-                sixColors = ['#7dc9f5','#0984ea','#04386b', '#f4d166','#ef701b','#9e3a26']
-
-            vis.color.range(e.selection ? ((e.selection[1] - e.selection[0] < 5) ? twoColors : sixColors) : twoColors)
-
             vis.wrangleData(startDate, endDate, id);
 
             return [startDate, endDate]
@@ -484,7 +496,7 @@
                         })
                         d3.select(vis.brush_exists ? '.move-step' : '.brush-step').property('disabled', false).classed('disabled-button', false)
                     }
-                    vis.last_brush = e.selection[0];
+                    vis.last_brush = e.selection ? e.selection[0] : null;
                 }
             });
 
