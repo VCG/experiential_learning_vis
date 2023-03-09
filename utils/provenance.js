@@ -20,3 +20,19 @@ class ProvenanceData {
         };
     }
 }
+
+function trackFocus(provData){
+    window.onfocus = function(){
+        provData.logEvent({
+            label: 'window_focused',
+            time: Date.now()
+        })
+    }
+
+    window.onblur = function(){
+        provData.logEvent({
+            label: 'window_blurred',
+            time: Date.now()
+        })
+    }
+}
