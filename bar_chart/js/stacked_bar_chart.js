@@ -13,13 +13,17 @@
         this.displayData = props.data;
         this.rids = ['lsvg1','lsvg2','vsvg1','vsvg2','vsvg3','usvg1','usvg2','usvg3'];
         this.rcolors = ['#ef701b','#0984ea','#9e3a26','#ef701b','#f4d166','#04386b','#0984ea','#7dc9f5'];
-        this.rlabels = ['Rate of Unvaccinated','Rate of Vaccinated','Ages 80+','Ages 50-79','Ages 18-49','Ages 80+','Ages 50-79','Ages 18-49'];
         this.svgs = {};
 
         // provenance metadata
         this.trigger = null;
         this.hover_start = null;
         this.provData = new ProvenanceData('bar chart', this.complexity)
+
+        // visualization labels
+        this.title = props.chart_title;
+        this.ylabel = props.chart_axis_labels.y;
+        this.rlabels = props.chart_legend_labels;
 
         // tooltip
         this.tooltip = d3.select("body")
@@ -91,10 +95,7 @@
         mc.append('div').attr('class', 'title')
             .append('h3')
                 .attr('id','chart-title')
-                .text(!vis.legend_changes && vis.complexity == 'complex'
-                            ? 'Weekly count of vaccinated & unvaccinated individuals who caught Covid-19, split by age' 
-                            : 'Weekly count of vaccinated & unvaccinated individuals who caught Covid-19'
-                    );
+                .text(!vis.legend_changes && vis.complexity == 'complex' ? vis.title.complex : vis.title.default);
         mc.append('div').append('p').attr('class','helper').text(
             '*Hover over the bars to explore further' + (vis.complexity == 'complex' ? ' and brush the timeline on the right to filter the data' : '')
             );
@@ -137,11 +138,11 @@
                 leg_row2 = leg.append('div')
     
                 vac = legend.append('div').attr('id','vax-leg')
-                vac.append('div').attr('class','legend-title').text('Rate of Vaccinated')
+                vac.append('div').attr('class','legend-title').text(vis.rlabels[1])
                 vac_row1 = vac.append('div'); vac_row2 = vac.append('div'); vac_row3 = vac.append('div')
     
                 unv = legend.append('div').attr('id','unvax-leg')
-                unv.append('div').attr('class','legend-title').text('Rate of Unvaccinated')
+                unv.append('div').attr('class','legend-title').text(vis.rlabels[0])
                 unv_row1 = unv.append('div'); unv_row2 = unv.append('div'); unv_row3 = unv.append('div')
     
                 let years = time.append('div').attr('class', 'legend-row')
@@ -179,11 +180,11 @@
             vis.hover_start = Date.now() - 1000
         }, 1000); 
 
-        let tooltip_text = !vis.whole_data 
+        let tooltip_text = vis.complexity=='complex' && (!vis.whole_data || !vis.legend_changes)
             ? `<b>Week:</b> ${d.data.Max_Week_Date2}<br>
                <b>Year:</b> ${yearFormat(d.data.Max_Week_Date)}<br>
                <br>
-               <b>Rate of Unvaccinated (per 100k):</b>
+               <b>${vis.rlabels[0]}:</b>
                <br>
                <span style="font-size:11px;color: ${vis.color('Unvax_80')}"> <b>Ages 80+:</b></span>
                <span style="font-size:11px;color: ${vis.color('Unvax_80')}"> ${number_format(d.data['Unvax_80'])}</span>
@@ -194,7 +195,7 @@
                <span style="font-size:11px;color: ${vis.color('Unvax_18_49')}"> <b>Ages 18-49:</b></span>
                <span style="font-size:11px;color: ${vis.color('Unvax_18_49')}"> ${number_format(d.data['Unvax_18_49'])}</span>
                <br><br>
-               <b>Rate of Vaccinated (per 100k):</b>
+               <b>${vis.rlabels[1]}:</b>
                <br>
                <span style="font-size:11px;color: ${vis.color('Vax_80')}"> <b>Ages 80+:</b></span>
                <span style="font-size:11px;color: ${vis.color('Vax_80')}"> ${number_format(d.data['Vax_80'])}</span>
@@ -209,15 +210,15 @@
                 ? `<b>Week:</b> ${d.data.Max_Week_Date2}<br>
                 <b>Year:</b> ${yearFormat(d.data.Max_Week_Date)}
                 <br>
-                <span style="font-size:11px;color: ${vis.color('Unvax_80')}"> <b>Rate of Unvaccinated (per 100k):</b></span>
+                <span style="font-size:11px;color: ${vis.color('Unvax_80')}"> <b>${vis.rlabels[0]}:</b></span>
                 <span style="font-size:11px;color: ${vis.color('Unvax_80')}"> ${number_format(d.data.Age_adjusted_unvax_IR)}</span>
                 <br>
-                <span style="font-size:11px;color: ${vis.color('Vax_80')}"> <b>Rate of Vaccinated (per 100k):</b></span>
+                <span style="font-size:11px;color: ${vis.color('Vax_80')}"> <b>${vis.rlabels[1]}:</b></span>
                 <span style="font-size:11px;color: ${vis.color('Unvax_50_79')}"> ${number_format(d.data.Age_adjusted_vax_IR)}</span>
                 <br>`
                 : `<b>Week:</b> ${d.Max_Week_Date2}<br>
                 <b>Year:</b> ${yearFormat(d.Max_Week_Date)}<br>
-                <span style="font-size:11px;color: ${vis.color(isOne ? 'Unvax_80' : 'Vax_80')}"> <b>${(isOne ? "Rate of Unvaccinated (per 100k): " : "Rate of Vaccinated (per 100k): ")}</b></span>
+                <span style="font-size:11px;color: ${vis.color(isOne ? 'Unvax_80' : 'Vax_80')}"> <b>${vis.rlabels[+!isOne]}:</b></span>
                 <span style="font-size:11px;color: ${vis.color(isOne ? 'Unvax_80' : 'Vax_80')}"> ${number_format(isOne ? d.Age_adjusted_unvax_IR : d.Age_adjusted_vax_IR)}</span>
                 <br>`
 
@@ -282,7 +283,7 @@
                 .attr('y', 10)
                 .attr('font-size', fontsize)
                 .attr('font-weight', 500)
-                .text(isOne ? 'Rate of Unvaccinated' : 'Rate of Vaccinated')
+                .text(vis.rlabels[+(!isOne)])
 
 
         //y axis label
@@ -292,7 +293,7 @@
             .attr("x", -vis.height/2)
             .attr("y", 0-55)
             .attr("font-size", fontsize)
-            .text("Cases per 100k people");
+            .text(vis.ylabel);
 
         // //add x label
         // vis.svgs[id]
@@ -441,13 +442,13 @@
                     d3.select('#vax-leg').style('display','none')
                     d3.select('#unvax-leg').style('display','none')
                     d3.select('#leg').style('display','block')
-                    d3.select('#chart-title').text('Weekly count of vaccinated & unvaccinated individuals who caught Covid-19')
+                    d3.select('#chart-title').text(vis.title.default)
                 } 
                 else{
                     d3.select('#vax-leg').style('display','block')
                     d3.select('#unvax-leg').style('display','block')
                     d3.select('#leg').style('display','none')
-                    d3.select('#chart-title').text('Weekly count of vaccinated & unvaccinated individuals who caught Covid-19, split by age')
+                    d3.select('#chart-title').text(vis.title.complex)
                 }
 
                 let twoColors = ['#0984ea','#0984ea','#0984ea', '#ef701b','#ef701b','#ef701b'],

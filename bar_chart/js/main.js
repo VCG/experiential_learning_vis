@@ -27,7 +27,24 @@ function getBarChartData(complexity, showSource, doTour, selector, changes=false
                 complexity: complexity,
                 source: showSource,
                 selector: selector,
-                changes: changes
+                changes: changes,
+                chart_title: {
+                    complex: 'Weekly count of vaccinated & unvaccinated individuals who caught Covid-19, split by age',
+                    default: 'Weekly count of vaccinated & unvaccinated individuals who caught Covid-19' 
+                },
+                chart_axis_labels: {
+                    y: 'Cases per 100k people'
+                },
+                chart_legend_labels: [
+                    'Rate of Unvaccinated',
+                    'Rate of Vaccinated',
+                    'Ages 80+',
+                    'Ages 50-79',
+                    'Ages 18-49',
+                    'Ages 80+',
+                    'Ages 50-79',
+                    'Ages 18-49'
+                ]
             });
             chart.initVis('chart', true)
             if(complexity === 'simple') chart.initVis('chart2', false)
