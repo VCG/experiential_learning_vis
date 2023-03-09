@@ -6,7 +6,7 @@
         this.source = props.source;
         this.whole_data = true;
         this.brush_exists = false;
-        this.legend_changes = this.complexity == 'complex' && props.changes;
+        this.legend_changes = props.changes;
         
         // global data
         this.data = props.data;
@@ -45,7 +45,7 @@
         // color palette = one color per subgroup
         this.color = d3.scaleOrdinal()
             .domain(this.subgroups)
-            .range(!this.legend_changes ? ['#7dc9f5','#0984ea','#04386b', '#f4d166','#ef701b','#9e3a26'] : ['#0984ea','#0984ea','#0984ea', '#ef701b','#ef701b','#ef701b'])  
+            .range(!this.legend_changes && this.complexity == 'complex' ? ['#7dc9f5','#0984ea','#04386b', '#f4d166','#ef701b','#9e3a26'] : ['#0984ea','#0984ea','#0984ea', '#ef701b','#ef701b','#ef701b'])  
 
         // set the dimensions and margins of the graph
         this.margin = {top: 20, right: 20, bottom: 60, left: 70};
@@ -91,7 +91,7 @@
         mc.append('div').attr('class', 'title')
             .append('h3')
                 .attr('id','chart-title')
-                .text(!vis.legend_changes
+                .text(!vis.legend_changes && vis.complexity == 'complex'
                             ? 'Weekly count of vaccinated & unvaccinated individuals who caught Covid-19, split by age' 
                             : 'Weekly count of vaccinated & unvaccinated individuals who caught Covid-19'
                     );
@@ -166,8 +166,8 @@
                             : [leg_row1,leg_row2]
             rows = rows.map(d => d.attr('class','legend-row'))
             rows.forEach((d,i) => {
-                d.append('div').attr('class','legend-value').append('svg').attr('id',vis.rids[i+2*!vis.legend_changes]).append('rect').style('fill',vis.rcolors[i+2*!vis.legend_changes])
-                d.append('div').attr('class','legend-label').text(vis.rlabels[i+2*!vis.legend_changes])
+                d.append('div').attr('class','legend-value').append('svg').attr('id',vis.rids[i+2*(!vis.legend_changes && vis.complexity == 'complex')]).append('rect').style('fill',vis.rcolors[i+2*(!vis.legend_changes && vis.complexity == 'complex')])
+                d.append('div').attr('class','legend-label').text(vis.rlabels[i+2*(!vis.legend_changes && vis.complexity == 'complex')])
             })
         }
     }
