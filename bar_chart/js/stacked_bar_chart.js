@@ -8,6 +8,7 @@
         this.brush_exists = false;
         this.legend_changes = props.changes;
         this.allow_interaction = props.allowInteraction;
+        this.is_covid = props.showCovidData;
         
         // global data
         this.data = props.data;
@@ -110,9 +111,9 @@
             mc.append('div')
                 .append('a')
                     .attr('target','_')
-                    .attr('href','https://data.cdc.gov/Public-Health-Surveillance/Rates-of-COVID-19-Cases-or-Deaths-by-Age-Group-and/3rge-nu2a/data')
+                    .attr('href',vis.is_covid ? 'https://data.cdc.gov/Public-Health-Surveillance/Rates-of-COVID-19-Cases-or-Deaths-by-Age-Group-and/3rge-nu2a/data' : 'https://komora.hr/')
                     .attr('class', 'source')
-                    .text('Source: Centers for Disease Control and Prevention')
+                    .text('Source: ' + (vis.is_covid ? 'Centers for Disease Control and Prevention (CDC)': 'Croatian Chamber of Agriculture (CCA)'))
                     .on('click', function(){
                         vis.provData.logEvent({
                             time: Date.now(),

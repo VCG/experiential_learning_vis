@@ -4,7 +4,7 @@
         "id": "#chart",
         "location": "bottom",
         "title": "Interactive Stacked Bar Chart",
-        "text": "This is an interactive stacked bar chart. <br>  Each bar is a week of data. <br> <br> Orange bars represent <b>unvaccinated</b> people; blue bars represent <b>vaccinated</b> people.<br> <br> <b>Your turn:</b> Hover over a bar to see the data for the corresponding week.",
+        "text": "This is an interactive stacked bar chart. <br>  Each bar is a week of data. <br> <br> Yellow, orange, and red bars represent <b>insect-related</b> crop diseases; light, medium, and dark blue bars represent <b>fungi-related</b> crop diseases.<br> <br> <b>Your turn:</b> Hover over a bar to see the data for the corresponding week.",
         "class": "main-vis-step",
         "disabled": false
       },
@@ -12,7 +12,7 @@
         "id": "#time_filter_div",
         "location": "left",
         "title": "Creating a Time Filter",
-        "text": "The x-axis shows time in weeks. <br> <br> You can select a subset of weeks to filter the data shown in the visualization.<br><br> <b>Your turn:</b> To proceed to the next step, create a selection by clicking and dragging over the time axis.<br><br><b>Notice that, after filtering, each bar is broken down by age group.</b>",
+        "text": "The x-axis shows time in weeks. <br> <br> You can select a subset of weeks to filter the data shown in the visualization.<br><br> <b>Your turn:</b> To proceed to the next step, create a selection by clicking and dragging over the time axis.<br>",
         "class": "brush-step",
         "disabled": true
       },
@@ -36,7 +36,7 @@
         "id": ".legend",
         "location": "left",
         "title": "Legend",
-        "text": "Note that this legend will change to reflect the categories of the data in the visualization.<br><br> That's it, have fun exploring the data!",
+        "text": "This is the legend. For both fungi-related and insect-related crop diseases, the data is broken down by specimen.<br><br> That's it, have fun exploring the data!",
         "class": "legend-step",
         "disabled": false
       }

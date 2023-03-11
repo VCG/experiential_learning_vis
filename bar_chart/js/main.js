@@ -39,6 +39,7 @@ function getBarChartData(props){
                 selector: props.selector,
                 changes: props.changes,
                 allowInteraction: props.allowInteraction,
+                showCovidData: props.showCovidData,
                 chart_title: props.showCovidData
                     ? {
                         complex: 'Weekly count of vaccinated & unvaccinated individuals who caught Covid-19, split by age',
@@ -83,9 +84,7 @@ function getBarChartData(props){
             trackFocus(chart.provData)
         });
     })
-    
-    
 }
 
-let props = { complexity: 'simple', doTour: false, changes: true, showCovidData: false, allowInteraction: true }
+// let props = { complexity: 'complex', doTour: false, showSource: true, changes: false, showCovidData: false, allowInteraction: true }
 // getBarChartData(props)
