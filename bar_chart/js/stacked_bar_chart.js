@@ -7,6 +7,7 @@
         this.whole_data = true;
         this.brush_exists = false;
         this.legend_changes = props.changes;
+        this.allow_interaction = props.allowInteraction;
         
         // global data
         this.data = props.data;
@@ -97,7 +98,7 @@
                 .attr('id','chart-title')
                 .text(!vis.legend_changes && vis.complexity == 'complex' ? vis.title.complex : vis.title.default);
         mc.append('div').append('p').attr('class','helper').text(
-            '*Hover over the bars to explore further' + (vis.complexity == 'complex' ? ' and brush the timeline on the right to filter the data' : '')
+            vis.allow_interaction ? '*Hover over the bars to explore further' + (vis.complexity == 'complex' ? ' and brush the timeline on the right to filter the data' : '') : ''
             );
         mc.append('div').attr('id','chart');
 
@@ -121,16 +122,22 @@
 
         if(vis.complexity != 'simple'){
             if(vis.complexity == 'complex'){
-                time = lc.append('div').attr('id','time_filter_div')
-                time.append('div').attr('class','brush-label').text('Filter by Month Range')
-    
-                let dates = time.append('div').attr('class','legend-row')
-                
-                dates.append('p').attr('id','left-date').attr('class','alignLeft').text(new Date(2021,3,5).toISOString().split('T')[0])
-                dates.append('p').attr('id','right-date').attr('class','alignRight ').text(new Date(2022,1,7).toISOString().split('T')[0])
-    
-                time.append('div').attr('id','brush-chart')
-    
+                if(vis.allow_interaction){
+                    time = lc.append('div').attr('id','time_filter_div')
+                    time.append('div').attr('class','brush-label').text('Filter by Month Range')
+        
+                    let dates = time.append('div').attr('class','legend-row')
+                    
+                    dates.append('p').attr('id','left-date').attr('class','alignLeft').text(new Date(2021,3,5).toISOString().split('T')[0])
+                    dates.append('p').attr('id','right-date').attr('class','alignRight ').text(new Date(2022,1,7).toISOString().split('T')[0])
+        
+                    time.append('div').attr('id','brush-chart')
+
+                    let years = time.append('div').attr('class', 'legend-row')
+                    years.append('p').attr('class','alignLeft').text('2021')
+                    years.append('p').attr('class','alignRight ').text('2022')
+                }
+
                 legend = lc.append('div').attr('class', 'legend')
     
                 leg = legend.append('div').attr('id','leg')
@@ -138,16 +145,14 @@
                 leg_row2 = leg.append('div')
     
                 vac = legend.append('div').attr('id','vax-leg')
-                vac.append('div').attr('class','legend-title').text(vis.rlabels[1])
+                vac.append('div').attr('class','legend-title').text(vis.rlabels[0])
                 vac_row1 = vac.append('div'); vac_row2 = vac.append('div'); vac_row3 = vac.append('div')
     
                 unv = legend.append('div').attr('id','unvax-leg')
-                unv.append('div').attr('class','legend-title').text(vis.rlabels[0])
+                unv.append('div').attr('class','legend-title').text(vis.rlabels[1])
                 unv_row1 = unv.append('div'); unv_row2 = unv.append('div'); unv_row3 = unv.append('div')
     
-                let years = time.append('div').attr('class', 'legend-row')
-                years.append('p').attr('class','alignLeft').text('2021')
-                years.append('p').attr('class','alignRight ').text('2022')
+                
     
                 if(vis.legend_changes){
                     vac.style('display','none')
@@ -162,7 +167,7 @@
     
             rows = vis.complexity == 'complex' 
                             ? vis.legend_changes 
-                                ? [leg_row1, leg_row2,vac_row1,vac_row2,vac_row3,unv_row1,unv_row2,unv_row3] 
+                                ? [leg_row1,leg_row2,vac_row1,vac_row2,vac_row3,unv_row1,unv_row2,unv_row3] 
                                 : [vac_row1,vac_row2,vac_row3,unv_row1,unv_row2,unv_row3] 
                             : [leg_row1,leg_row2]
             rows = rows.map(d => d.attr('class','legend-row'))
@@ -186,24 +191,24 @@
                <br>
                <b>${vis.rlabels[0]}:</b>
                <br>
-               <span style="font-size:11px;color: ${vis.color('Unvax_80')}"> <b>Ages 80+:</b></span>
+               <span style="font-size:11px;color: ${vis.color('Unvax_80')}"> <b>${vis.rlabels[2]}:</b></span>
                <span style="font-size:11px;color: ${vis.color('Unvax_80')}"> ${number_format(d.data['Unvax_80'])}</span>
                <br>
-               <span style="font-size:11px;color: ${vis.color('Unvax_50_79')}"> <b>Ages 50-79:</b></span>
+               <span style="font-size:11px;color: ${vis.color('Unvax_50_79')}"> <b>${vis.rlabels[3]}:</b></span>
                <span style="font-size:11px;color: ${vis.color('Unvax_50_79')}"> ${number_format(d.data['Unvax_50_79'])}</span>
                <br>
-               <span style="font-size:11px;color: ${vis.color('Unvax_18_49')}"> <b>Ages 18-49:</b></span>
+               <span style="font-size:11px;color: ${vis.color('Unvax_18_49')}"> <b>${vis.rlabels[4]}:</b></span>
                <span style="font-size:11px;color: ${vis.color('Unvax_18_49')}"> ${number_format(d.data['Unvax_18_49'])}</span>
                <br><br>
                <b>${vis.rlabels[1]}:</b>
                <br>
-               <span style="font-size:11px;color: ${vis.color('Vax_80')}"> <b>Ages 80+:</b></span>
+               <span style="font-size:11px;color: ${vis.color('Vax_80')}"> <b>${vis.rlabels[5]}:</b></span>
                <span style="font-size:11px;color: ${vis.color('Vax_80')}"> ${number_format(d.data['Vax_80'])}</span>
                <br>
-               <span style="font-size:11px;color: ${vis.color('Vax_50_79')}"> <b>Ages 50-79:</b></span>
+               <span style="font-size:11px;color: ${vis.color('Vax_50_79')}"> <b>${vis.rlabels[6]}:</b></span>
                <span style="font-size:11px;color: ${vis.color('Vax_50_79')}"> ${number_format(d.data['Vax_50_79'])}</span>
                <br>
-               <span style="font-size:11px;color: ${vis.color('Vax_18_49')}"> <b>Ages 18-49:</b></span>
+               <span style="font-size:11px;color: ${vis.color('Vax_18_49')}"> <b>${vis.rlabels[7]}:</b></span>
                <span style="font-size:11px;color: ${vis.color('Vax_18_49')}"> ${number_format(d.data['Vax_18_49'])}</span>
                <br><br>`
             : vis.complexity != 'simple' 
@@ -326,7 +331,7 @@
 
         vis.svgs[id].append("g").attr("class", "y-axis");
 
-        if(vis.complexity == 'complex') vis.initBrush(id)
+        if(vis.complexity == 'complex' && vis.allow_interaction) vis.initBrush(id)
         vis.updateVis(id,isOne)
     }
 
@@ -383,8 +388,12 @@
                         return (ret < 0) ? -ret : ret
                     })
                     .attr("width", vis.x_scale.bandwidth())
-                    .on("mouseover", function(e,d){ vis.mouse_over(e,d,id) })
-                    .on("mouseout", function(e,d){ vis.mouse_out(d,id) });
+                    .on("mouseover", function(e,d){ 
+                        if(vis.allow_interaction) vis.mouse_over(e,d,id) 
+                    })
+                    .on("mouseout", function(e,d){ 
+                        if(vis.allow_interaction) vis.mouse_out(d,id) 
+                    });
         } else {
             vis.svgs[id].selectAll("mybar")
                 .data(vis.data)
@@ -398,8 +407,12 @@
                         return ret < 0 ? -ret : ret;
                     })
                     .attr("fill", isOne ? "#ef701b" : "#0984ea")
-                    .on("mouseover", function(e, d) { vis.mouse_over(e,d,id,isOne) })
-                    .on("mouseout", function(e,d){ vis.mouse_out(d,id) })
+                    .on("mouseover", function(e, d) { 
+                        if(vis.allow_interaction) vis.mouse_over(e,d,id,isOne) 
+                    })
+                    .on("mouseout", function(e,d){ 
+                        if(vis.allow_interaction) vis.mouse_out(d,id) 
+                    })
         }
 
         //grey y gridlines

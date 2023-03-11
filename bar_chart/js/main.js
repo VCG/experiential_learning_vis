@@ -1,7 +1,17 @@
 var chart
 
-function getBarChartData(complexity, showSource, doTour, selector, changes=false){
-    return d3.json('https://vcg.github.io/trust_in_science/bar_chart/data/toursteps.json')
+/* props : { 
+    complexity: string (simple, moderate, complex), 
+    doTour: boolean, 
+    changes: boolean, 
+    showSource: boolean,
+    showCovidData: boolean,
+    allowInteraction: boolean,
+    selector: object
+} */
+function getBarChartData(props){
+    // return d3.json(`data/${props.showCovidData ? "covid" : "non_covid"}_toursteps.json`)
+    return d3.json(`https://vcg.github.io/trust_in_science/bar_chart/data/${props.showCovidData ? "covid" : "non_covid"}_toursteps.json`)
     .then(toursteps => {
         d3.csv("https://vcg.github.io/trust_in_science/bar_chart/data/bar_chart_complex2.csv", (row,i) => {
             row.Index = i;
@@ -24,31 +34,52 @@ function getBarChartData(complexity, showSource, doTour, selector, changes=false
         .then(data => {
             chart = new StackedBarChart({
                 data: data,
-                complexity: complexity,
-                source: showSource,
-                selector: selector,
-                changes: changes,
-                chart_title: {
-                    complex: 'Weekly count of vaccinated & unvaccinated individuals who caught Covid-19, split by age',
-                    default: 'Weekly count of vaccinated & unvaccinated individuals who caught Covid-19' 
-                },
-                chart_axis_labels: {
-                    y: 'Cases per 100k people'
-                },
-                chart_legend_labels: [
-                    'Rate of Unvaccinated',
-                    'Rate of Vaccinated',
-                    'Ages 80+',
-                    'Ages 50-79',
-                    'Ages 18-49',
-                    'Ages 80+',
-                    'Ages 50-79',
-                    'Ages 18-49'
-                ]
+                complexity: props.complexity,
+                source: props.showSource,
+                selector: props.selector,
+                changes: props.changes,
+                allowInteraction: props.allowInteraction,
+                chart_title: props.showCovidData
+                    ? {
+                        complex: 'Weekly count of vaccinated & unvaccinated individuals who caught Covid-19, split by age',
+                        default: 'Weekly count of vaccinated & unvaccinated individuals who caught Covid-19' 
+                    }
+                    : {
+                        complex: 'Weekly count of insect-related and fungi-related crop diseases in Kumrovec, Croatia, split by type',
+                        default: 'Weekly count of insect-related and fungi-related crop diseases in Kumrovec, Croatia'
+                    },
+                chart_axis_labels: props.showCovidData 
+                    ? {
+                        y: 'Cases per 100k people'
+                    }
+                    : {
+                        y: 'Pests per 100 acres'
+                    },
+                chart_legend_labels: props.showCovidData 
+                    ? [
+                        'Rate of Unvaccinated',
+                        'Rate of Vaccinated',
+                        'Ages 80+',
+                        'Ages 50-79',
+                        'Ages 18-49',
+                        'Ages 80+',
+                        'Ages 50-79',
+                        'Ages 18-49'
+                    ]
+                    : [
+                        'Rate of Insect-Related Crop Diseases',
+                        'Rate of Fungi-Related Crop Diseases',
+                        'Mealybug',
+                        'Bollworm',
+                        'Aphid',
+                        'Black root rot',
+                        'Clubfoot',
+                        'Sclerotinia rots'
+                    ]
             });
             chart.initVis('chart', true)
-            if(complexity === 'simple') chart.initVis('chart2', false)
-            if(doTour) createTour(complexity, toursteps, chart.provData)
+            if(props.complexity === 'simple') chart.initVis('chart2', false)
+            if(props.doTour) createTour(props.complexity, toursteps, chart.provData)
             trackFocus(chart.provData)
         });
     })
@@ -56,7 +87,5 @@ function getBarChartData(complexity, showSource, doTour, selector, changes=false
     
 }
 
-// getBarChartData('simple', true, true)
-// getBarChartData('moderate', true, true)
-// getBarChartData('complex', true, true)
-// getBarChartData('complex', true, true, null, true)
+let props = { complexity: 'simple', doTour: false, changes: true, showCovidData: false, allowInteraction: true }
+// getBarChartData(props)
