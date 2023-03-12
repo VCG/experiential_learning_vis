@@ -1,5 +1,9 @@
 var chart
-
+var vlatPrompts
+d3.json(`https://vcg.github.io/trust_in_science/bar_chart/data/VLAT_questions.json`)
+    .then(data => {
+        vlatPrompts = data;
+    })
 /* props : { 
     complexity: string (simple, moderate, complex), 
     doTour: boolean, 
@@ -86,12 +90,8 @@ function getBarChartData(props){
     })
 }
 
-function getVLATprompts(props){
-    return d3.json(`https://vcg.github.io/trust_in_science/bar_chart/data/VLAT_questions.json`)
-    .then(vlatQuestions => {
-        console.log(vlatQuestions)
-        return 'test_question'
-    })
+function getVLATprompts(qid,showCovidData){
+    return vlatPrompts[qid].prompt[(showCovidData? 'covid' : 'nonCovid')]
 
 }
 
