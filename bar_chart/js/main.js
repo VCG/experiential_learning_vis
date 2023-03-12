@@ -86,5 +86,14 @@ function getBarChartData(props){
     })
 }
 
+function getVLATprompts(props){
+    return d3.json(`https://vcg.github.io/trust_in_science/bar_chart/data/VLAT_questions.json`)
+    .then(vlatQuestions => {
+        console.log(vlatQuestions)
+        return 'test_question'
+    })
+
+}
+
 // let props = { complexity: 'complex', doTour: false, showSource: true, changes: false, showCovidData: false, allowInteraction: true }
 // getBarChartData(props)
