@@ -72,8 +72,8 @@ function getBarChartData(props){
                         'Ages 18-49'
                     ]
                     : [
-                        'Rate of Insect-Related Crop Diseases',
-                        'Rate of Fungi-Related Crop Diseases',
+                        'Insect-Related Crop Diseases',
+                        'Fungi-Related Crop Diseases',
                         'Mealybug',
                         'Bollworm',
                         'Aphid',
