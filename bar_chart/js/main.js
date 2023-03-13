@@ -62,8 +62,8 @@ function getBarChartData(props){
                     },
                 chart_legend_labels: props.showCovidData 
                     ? [
-                        'Rate of Unvaccinated',
-                        'Rate of Vaccinated',
+                        'Unvaccinated',
+                        'Vaccinated',
                         'Ages 80+',
                         'Ages 50-79',
                         'Ages 18-49',
