@@ -95,13 +95,13 @@ function getVLATprompts(qid, showCovidData) {
     return vlatPrompts[qid].prompt[(showCovidData ? 'covid' : 'nonCovid')]
 
 }
-
-let props = {
-    complexity: 'complex',
-    doTour: false,
-    showSource: true,
-    changes: false,
-    showCovidData: false,
-    allowInteraction: true
-}
-getBarChartData(props)
+//
+// let props = {
+//     complexity: 'complex',
+//     doTour: false,
+//     showSource: true,
+//     changes: false,
+//     showCovidData: false,
+//     allowInteraction: true
+// }
+// getBarChartData(props)

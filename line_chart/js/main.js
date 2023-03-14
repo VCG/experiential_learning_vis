@@ -77,12 +77,12 @@ function getLineChartData(props) {
         });
 }
 
-let props = {
-    complexity: 'complex',
-    doTour: false,
-    showSource: true,
-    changes: true,
-    showCovidData: true,
-    allowInteraction: true
-};
-getLineChartData(props);
+// let props = {
+//     complexity: 'complex',
+//     doTour: false,
+//     showSource: true,
+//     changes: true,
+//     showCovidData: true,
+//     allowInteraction: true
+// };
+// getLineChartData(props);
