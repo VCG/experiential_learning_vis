@@ -1,8 +1,10 @@
 var chart
 
 function getLineChartData(props) {
-    return d3.json('https://vcg.github.io/trust_in_science/line_chart/data/toursteps.json')
+    // return d3.json(`data/${props.showCovidData ? "covid" : "non_covid"}_toursteps.json`)
+    return d3.json(`https://vcg.github.io/trust_in_science/line_chart/data/${props.showCovidData ? "covid" : "non_covid"}_toursteps.json`)
         .then(toursteps => {
+            console.log(toursteps)
             d3.csv("https://vcg.github.io/trust_in_science/line_chart/data/line_chart_complex.csv", (row, i) => {
             // d3.csv("js/line_chart_complex.csv", (row, i) => {
                 row.Vax_18_49 = number_format_line(+row.Vax_18_49);
@@ -81,12 +83,12 @@ function getLineChartData(props) {
         });
 }
 
-let props = {
-    complexity: 'complex',
-    doTour: true,
-    showSource: true,
-    changes: true,
-    showCovidData: false,
-    allowInteraction: true
-};
-getLineChartData(props);
+// let props = {
+//     complexity: 'complex',
+//     doTour: true,
+//     showSource: true,
+//     changes: true,
+//     showCovidData: false,
+//     allowInteraction: true
+// };
+// getLineChartData(props);

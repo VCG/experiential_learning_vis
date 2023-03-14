@@ -72,7 +72,7 @@ class LineChart {
                 })
             });
 
-        if (this.complexity == 'complex' && this.allow_interaction) {
+        if (vis.complexity == 'complex' && vis.allow_interaction) {
             let time = lc.append('div').attr('id', 'time_filter_div')
             time.append('div').attr('class', 'brush-label').text('Filter by Month Range')
 
@@ -91,7 +91,7 @@ class LineChart {
             vac = lc.append('div').attr('id', 'vax-leg').attr('class', 'legend'),
             unv = lc.append('div').attr('id', 'unvax-leg').attr('class', 'legend');
 
-        if (this.complexity == 'complex') {
+        if (vis.complexity == 'complex') {
             vac.append('div').attr('class', 'legend-title').text(vis.rlabels[0]);
             unv.append('div').attr('class', 'legend-title').text(vis.rlabels[1]);
 
