@@ -43,7 +43,7 @@ class LineChart {
         // provenance metadata
         this.trigger = null;
         this.hover_start = null;
-        this.provData = new ProvenanceData('line chart', props.complexity)
+        this.provData = new ProvenanceData('line chart', props.complexity);
         // set the dimensions and margins of the graph
         this.margin = {top: 20, right: 20, bottom: 100, left: 70};
         this.totalWidth = d3.select('#chart').node().getBoundingClientRect().width
@@ -57,15 +57,14 @@ class LineChart {
         return this.provData.getProvenance()
     }
 
-    buildHtml(selector = null) {
-        console.log('building html')
+    buildHtml(selector) {
+        console.log('building html');
         let vis = this;
         let container = selector
             ? d3.select(`#${selector.questionId}`).select('.QuestionText')
                 .insert('div', ':first-child')
                 .attr('class', 'row')
-            : d3.select('#main-container').select('.QuestionText')
-
+            : d3.select('#main-container').select('.QuestionText');
 
         let mc = container.append('div').attr('class', 'col-8 main-content'),
             lc = container.append('div').attr('class', 'col-4 legend-content-line').attr('id', 'legend')
@@ -163,11 +162,9 @@ class LineChart {
             .attr("dy", "1em")
             .style('font-size', '12px');
 
-
         vis.svg.append("g").attr("class", "y-axis");
 
         let fontsize = Math.max(11, vis.width / 36)
-
 
         //unvaccinated legend
         vis.svg.selectAll(".legend")
@@ -265,7 +262,7 @@ class LineChart {
                 .tickFormat("")
             );
 
-        if (this.complex) {
+        if (this.complex && this.interactive) {
             // Add the unvaccinated line 18-49
             vis.svg.append("path")
                 .datum(vis.displayData)
@@ -401,8 +398,35 @@ class LineChart {
                     .y(function (d) {
                         return vis.y(d.Age_adjusted_vax_IR)
                     })
-                )
+                );
 
+            if (this.complex) {
+                // Show confidence interval
+                vis.svg.append("path")
+                    .datum(vis.data)
+                    .attr("fill", "#0de529")
+                    .attr("stroke", "none")
+                    .attr("d", d3.area()
+                        .x(function (d) {
+                            return vis.x_time(d.Max_Week_Date)
+                        })
+                        .y0(function(d) { return  vis.y(d.Unvax_18_49) })
+                        .y1(function(d) { return  vis.y(d.Unvax_80) })
+                    )
+
+                // Show confidence interval
+                vis.svg.append("path")
+                    .datum(vis.data)
+                    .attr("fill", "#e52e43")
+                    .attr("stroke", "none")
+                    .attr("d", d3.area()
+                        .x(function (d) {
+                            return vis.x_time(d.Max_Week_Date)
+                        })
+                        .y0(function(d) { return  vis.y(d.Vax_18_49) })
+                        .y1(function(d) { return  vis.y(d.Vax_80) })
+                    )
+            }
         }
         // Add tooltip here to draw on top of the chart
         vis.initTooltip();
@@ -510,7 +534,7 @@ class LineChart {
 
                 vis.text7.text(vis.rlabels[0]);
                 vis.text8.text(vis.rlabels[2] + ": " + (closest.Vax_80) + vis.legendLabel);
-                vis.text9.text(vis.rlabels[3]+ ": " + (closest.Vax_50_79) + vis.legendLabel);
+                vis.text9.text(vis.rlabels[3] + ": " + (closest.Vax_50_79) + vis.legendLabel);
                 vis.text10.text(vis.rlabels[4] + ": " + (closest.Vax_18_49) + vis.legendLabel);
             } else {
                 vis.text3.text(vis.rlabels[0]);
