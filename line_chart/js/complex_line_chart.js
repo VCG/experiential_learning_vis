@@ -2,35 +2,21 @@ class LineChart {
 
     constructor(props) {
         // global metadata
-        if (props.complexity === 'simple') {
-            this.complex = false;
-            this.interactive = false;
-        } else if (props.complexity === 'complex') {
-            this.complex = true;
-            this.interactive = props.allowInteraction;
-        }
+        this.complexity = props.complexity;
         this.source = props.source;
-        this.data = props.data;
         this.brush_exists = false;
+        this.legend_changes = props.changes;
+        this.allow_interaction = props.allowInteraction;
         this.is_covid = props.showCovidData;
+        
 
         // create a list of keys
         this.keys = ["Ages 80+", "Ages 50-79", "Ages 18-49"];
-        this.months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-        this.num_days = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
-        this.weeks = {
-            14: 'Apr',
-            18: 'May',
-            23: 'Jun',
-            27: 'Jul',
-            31: 'Aug',
-            36: 'Sep',
-            40: 'Oct',
-            44: 'Nov',
-            49: 'Dec',
-            1: 'Jan',
-            6: 'Feb'
-        };
+
+        this.data = props.data;
+        this.displayData = props.data;
+        this.rids = ['lsvg1', 'lsvg2', 'vsvg1', 'vsvg2', 'vsvg3', 'usvg1', 'usvg2', 'usvg3'];
+        this.rcolors = ['#ef701b', '#0984ea', '#9e3a26', '#ef701b', '#f4d166', '#04386b', '#0984ea', '#7dc9f5'];
 
         // visualization labels
         this.title = props.chart_title;
@@ -50,7 +36,7 @@ class LineChart {
         this.width = this.totalWidth - this.margin.left - this.margin.right;
         this.height = this.totalWidth / 1.5 - this.margin.top - this.margin.bottom;
 
-        this.displayData = this.data
+        
     }
 
     getProvenance() {
@@ -71,10 +57,9 @@ class LineChart {
 
         mc.append('div').attr('class', 'title')
             .append('h3').attr('id', 'chart-title')
-            .text(vis.complex ? vis.title.complex : vis.title.default);
+            .text(!vis.legend_changes && vis.complexity == 'complex' ? vis.title.complex : vis.title.default);
         mc.append('div').attr('class', 'helper')
-            .text(vis.interactive ? '*Hover over the lines to explore further and brush the timeline on the right to filter the data' :
-                '*Hover over the lines to explore further');
+            .text(vis.allow_interaction ? '*Hover over the bars to explore further' + (vis.complexity == 'complex' ? ' and brush the timeline on the right to filter the data' : '') : '');
         mc.append('div').attr('id', 'chart');
         if (vis.source) mc.append('div').append('a').attr('target', '_')
             .attr('href', vis.is_covid ? 'https://data.cdc.gov/Public-Health-Surveillance/Rates-of-COVID-19-Cases-or-Deaths-by-Age-Group-and/3rge-nu2a/data' : 'https://komora.hr/')
@@ -87,7 +72,7 @@ class LineChart {
                 })
             });
 
-        if (this.interactive) {
+        if (this.complexity == 'complex' && this.allow_interaction) {
             let time = lc.append('div').attr('id', 'time_filter_div')
             time.append('div').attr('class', 'brush-label').text('Filter by Month Range')
 
@@ -106,21 +91,18 @@ class LineChart {
             vac = lc.append('div').attr('id', 'vax-leg').attr('class', 'legend'),
             unv = lc.append('div').attr('id', 'unvax-leg').attr('class', 'legend');
 
-        if (this.complex && this.interactive) {
+        if (this.complexity == 'complex') {
             vac.append('div').attr('class', 'legend-title').text(vis.rlabels[0]);
             unv.append('div').attr('class', 'legend-title').text(vis.rlabels[1]);
 
             let leg_row1 = leg.append('div'), leg_row2 = leg.append('div'),
                 vac_row1 = vac.append('div'), vac_row2 = vac.append('div'), vac_row3 = vac.append('div'),
                 unv_row1 = unv.append('div'), unv_row2 = unv.append('div'), unv_row3 = unv.append('div')
-            let rows = [leg_row1, leg_row2, vac_row1, vac_row2, vac_row3, unv_row1, unv_row2, unv_row3].map(d => d.attr('class', 'legend-row')),
-                rids = ['lsvg1', 'lsvg2', 'vsvg1', 'vsvg2', 'vsvg3', 'usvg1', 'usvg2', 'usvg3'],
-                rcolors = ['#ef701b', '#0984ea', '#9e3a26', '#ef701b', '#f4d166', '#04386b', '#0984ea', '#7dc9f5'],
-                rlabels = vis.rlabels;
+            let rows = [leg_row1, leg_row2, vac_row1, vac_row2, vac_row3, unv_row1, unv_row2, unv_row3].map(d => d.attr('class', 'legend-row'))
 
             rows.forEach((d, i) => {
-                d.append('div').attr('class', 'legend-value').append('svg').attr('id', rids[i]).append('rect').style('fill', rcolors[i])
-                d.append('div').attr('class', 'legend-label').text(rlabels[i])
+                d.append('div').attr('class', 'legend-value').append('svg').attr('id', vis.rids[i]).append('rect').style('fill', vis.rcolors[i])
+                d.append('div').attr('class', 'legend-label').text(vis.rlabels[i])
             })
         } else {
             vac.append('div').attr('class', 'legend-value').append('svg').attr('id', "vacced").append('rect').style('fill', "orange")
@@ -194,7 +176,7 @@ class LineChart {
             .attr("font-size", fontsize)
             .text(vis.ylabel);
 
-        if (this.interactive) {
+        if (this.complexity == 'complex' && this.allow_interaction) {
             vis.initBrush();
         }
         vis.wrangleData();
@@ -262,7 +244,7 @@ class LineChart {
                 .tickFormat("")
             );
 
-        if (this.complex && this.interactive) {
+        if (this.complexity == 'complex') {
             // Add the unvaccinated line 18-49
             vis.svg.append("path")
                 .datum(vis.displayData)
@@ -369,7 +351,7 @@ class LineChart {
                 )
                 .style("pointer-events", "none");
         } else {
-            if (this.complex) {
+            if (this.complexity == 'moderate') {
                 // Show confidence interval
                 vis.svg.append("path")
                     .datum(vis.data)
@@ -479,13 +461,17 @@ class LineChart {
             .attr("fill", "transparent")
             //  .attr("fill", "white")
             .on("mouseover", function (event, d) {
-                vis.tooltip.attr("display", "null");
+                if(vis.allow_interaction) vis.tooltip.attr("display", "null");
             })
             .on("mouseout", function (event, d) {
-                clearTimeout(vis.trigger)
-                vis.tooltip.attr("display", "none");
+                if(vis.allow_interaction) {
+                    clearTimeout(vis.trigger)
+                    vis.tooltip.attr("display", "none");
+                }
             })
-            .on("mousemove", mousemove);
+            .on("mousemove", function(event){
+                if(vis.allow_interaction) mousemove(event)
+            });
 
         let bisectDate = d3.bisector(d => d.Max_Week_Date).left;
 
@@ -545,7 +531,7 @@ class LineChart {
             let x_text = (x_coordinate > (vis.width / 2)) ? -20 : 20;
 
             vis.text.attr("text-anchor", anchor).attr("x", x_text);
-            if (vis.complex && vis.interactive) {
+            if (vis.complexity == 'complex' && vis.allow_interaction) {
                 vis.text5.attr("text-anchor", anchor).attr("x", x_text);
                 vis.text6.attr("text-anchor", anchor).attr("x", x_text);
                 vis.text9.attr("text-anchor", anchor).attr("x", x_text);
@@ -559,7 +545,7 @@ class LineChart {
             vis.tooltip.attr("transform", "translate(" + x_coordinate + ")");
             vis.text.text("Week: " + (closest.Max_Week_Date1));
 
-            if (vis.complex && vis.interactive) {
+            if (vis.complexity == 'complex' && vis.allow_interaction) {
                 vis.text3.text(vis.rlabels[1]);
                 vis.text4.text(vis.rlabels[5] + ": " + (closest.Unvax_80) + vis.legendLabel);
                 vis.text5.text(vis.rlabels[6] + ": " + (closest.Unvax_50_79) + vis.legendLabel);
@@ -691,7 +677,7 @@ class LineChart {
 
         vis.tooltip.append("rect")
             .attr("width", 200)
-            .attr("height", !(this.complex&&this.interactive) ? 100 : 250)
+            .attr("height", !(this.complexity == 'complex' && this.allow_interaction) ? 100 : 250)
             .attr("x", 0)
             .attr("y", 0)
             .style("fill", "white")
@@ -700,7 +686,7 @@ class LineChart {
 
         vis.tooltip.append("rect")
             .attr("width", 200)
-            .attr("height", !(this.complex&&this.interactive) ? 100 : 250)
+            .attr("height", !(this.complexity == 'complex' && this.allow_interaction) ? 100 : 250)
             .attr("x", -200)
             .attr("y", 0)
             .style("fill", "white")
@@ -723,7 +709,7 @@ class LineChart {
             .style("font-size", '14px')
             .style("fill", "black");
 
-        if (this.complex && this.interactive) {
+        if (this.complexity == 'complex' && this.allow_interaction) {
             vis.text2 = vis.tooltip.append("text")
                 .attr("class", "tooltip-text")
                 .attr("x", 10)
@@ -737,7 +723,7 @@ class LineChart {
         vis.text3 = vis.tooltip.append("text")
             .attr("class", "tooltip-text")
             .attr("x", 10)
-            .attr("y", (this.complex&&this.interactive) ? 60 : 30)
+            .attr("y", (this.complexity == 'complex' && this.allow_interaction) ? 60 : 30)
             .attr("font-family", "Segoe UI")
             .attr('font-size', '14px')
             .style("fill", "black")
@@ -747,12 +733,12 @@ class LineChart {
         vis.text4 = vis.tooltip.append("text")
             .attr("class", "tooltip-text")
             .attr("x", 10)
-            .attr("y", (this.complex&&this.interactive) ? 80 : 45)
-            .style("fill", (this.complex&&this.interactive) ? "#9e3a26" : "orange")
+            .attr("y", (this.complexity == 'complex' && this.allow_interaction) ? 80 : 45)
+            .style("fill", (this.complexity == 'complex' && this.allow_interaction) ? "#9e3a26" : "orange")
             .attr("font-family", "Segoe UI")
             .style("font-size", '11px');
 
-        if (this.complex && this.interactive) {
+        if (this.complexity == 'complex' && this.allow_interaction) {
             vis.text5 = vis.tooltip.append("text")
                 .attr("class", "tooltip-text")
                 .attr("x", 10)
@@ -772,7 +758,7 @@ class LineChart {
         vis.text7 = vis.tooltip.append("text")
             .attr("class", "tooltip-text")
             .attr("x", 10)
-            .attr("y", (this.complex && this.interactive) ? 160 : 70)
+            .attr("y", (this.complexity == 'complex' && this.allow_interaction) ? 160 : 70)
             .style("fill", "black")
             .attr('font-weight', 'bold')
             .attr("font-family", "Segoe UI")
@@ -781,12 +767,12 @@ class LineChart {
         vis.text8 = vis.tooltip.append("text")
             .attr("class", "tooltip-text")
             .attr("x", 10)
-            .attr("y", (this.complex && this.interactive) ? 180 : 85)
-            .style("fill", (this.complex && this.interactive) ? "#04386b" : "blue")
+            .attr("y", (this.complexity == 'complex' && this.allow_interaction) ? 180 : 85)
+            .style("fill", (this.complexity == 'complex' && this.allow_interaction) ? "#04386b" : "blue")
             .attr("font-family", "Segoe UI")
             .style("font-size", '11px');
 
-        if (this.complex && this.interactive) {
+        if (this.complexity == 'complex' && this.allow_interaction) {
             vis.text9 = vis.tooltip.append("text")
                 .attr("class", "tooltip-text")
                 .attr("x", 10)

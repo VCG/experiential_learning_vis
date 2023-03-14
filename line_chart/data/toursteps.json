@@ -3,14 +3,6 @@
       {
         "id": "#chart",
         "location": "bottom",
-        "title": "Line Chart Tour",
-        "text": "Before we show you the line chart, we will first guide you through the main components of the visualization.",
-        "class": "start-step",
-        "disabled": false
-      },
-      {
-        "id": "#chart",
-        "location": "bottom",
         "title": "Line Chart Visualization",
         "text": "This is the main visualizations.<br> <b>Your turn:</b> Hover over the lines to see details.",
         "class": "first-vis-step",

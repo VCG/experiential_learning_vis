@@ -55,8 +55,8 @@ function getLineChartData(props) {
                         },
                     chart_legend_labels: props.showCovidData
                         ? [
-                            'Rate of Vaccinated',
-                            'Rate of Unvaccinated',
+                            'Unvaccinated',
+                            'Vaccinated',
                             'Ages 80+',
                             'Ages 50-79',
                             'Ages 18-49',
@@ -81,12 +81,12 @@ function getLineChartData(props) {
         });
 }
 
-// let props = {
-//     complexity: 'complex',
-//     doTour: false,
-//     showSource: true,
-//     changes: true,
-//     showCovidData: true,
-//     allowInteraction: true
-// };
-// getLineChartData(props);
+let props = {
+    complexity: 'complex',
+    doTour: true,
+    showSource: true,
+    changes: true,
+    showCovidData: false,
+    allowInteraction: true
+};
+getLineChartData(props);
