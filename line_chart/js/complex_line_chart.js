@@ -5,18 +5,17 @@ class LineChart {
         if (props.complexity === 'simple') {
             this.complex = false;
             this.interactive = false;
-        } else if (props.complexity === 'moderate') {
+        } else if (props.complexity === 'complex') {
             this.complex = true;
-            this.interactive = false;
-        } else {
-            this.complex = true;
-            this.interactive = true;
+            this.interactive = props.allowInteraction;
         }
         this.source = props.source;
         this.data = props.data;
         this.brush_exists = false;
+        this.is_covid = props.showCovidData;
+
         // create a list of keys
-        this.keys = ["Ages 80+", "Ages 50-79", "Ages 18-49"]
+        this.keys = ["Ages 80+", "Ages 50-79", "Ages 18-49"];
         this.months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
         this.num_days = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
         this.weeks = {
@@ -31,9 +30,15 @@ class LineChart {
             49: 'Dec',
             1: 'Jan',
             6: 'Feb'
-        }
+        };
 
-        this.buildHtml(props.selector)
+        // visualization labels
+        this.title = props.chart_title;
+        this.ylabel = props.chart_axis_labels.y;
+        this.rlabels = props.chart_legend_labels;
+        this.legendLabel = props.chart_legend_label;
+
+        this.buildHtml(props.selector);
 
         // provenance metadata
         this.trigger = null;
@@ -66,11 +71,22 @@ class LineChart {
             lc = container.append('div').attr('class', 'col-4 legend-content-line').attr('id', 'legend')
 
         mc.append('div').attr('class', 'title')
-            .append('h3').attr('id', 'chart-title').text('Weekly count of vaccinated & unvaccinated individuals who caught Covid-19, split by age');
-        mc.append('div').attr('class', 'helper').text(vis.complex ? '*Hover over the lines to explore further and brush the timeline on the right to filter the data' :
-            '*Hover over the lines to explore further');
+            .append('h3').attr('id', 'chart-title')
+            .text(vis.complex ? vis.title.complex : vis.title.default);
+        mc.append('div').attr('class', 'helper')
+            .text(vis.complex ? '*Hover over the lines to explore further and brush the timeline on the right to filter the data' :
+                '*Hover over the lines to explore further');
         mc.append('div').attr('id', 'chart');
-        if (vis.source) mc.append('div').append('a').attr('target', '_').attr('href', 'https://data.cdc.gov/Public-Health-Surveillance/Rates-of-COVID-19-Cases-or-Deaths-by-Age-Group-and/3rge-nu2a/data').attr('class', 'source').text('Source: Centers for Disease Control and Prevention');
+        if (vis.source) mc.append('div').append('a').attr('target', '_')
+            .attr('href', vis.is_covid ? 'https://data.cdc.gov/Public-Health-Surveillance/Rates-of-COVID-19-Cases-or-Deaths-by-Age-Group-and/3rge-nu2a/data' : 'https://komora.hr/')
+            .attr('class', 'source')
+            .text('Source: ' + (vis.is_covid ? 'Centers for Disease Control and Prevention (CDC)' : 'Croatian Chamber of Agriculture (CCA)'))
+            .on('click', function () {
+                vis.provData.logEvent({
+                    time: Date.now(),
+                    label: 'source_clicked'
+                })
+            });
 
         if (this.interactive) {
             let time = lc.append('div').attr('id', 'time_filter_div')
@@ -83,8 +99,8 @@ class LineChart {
             time.append('div').attr('id', 'brush-chart')
 
 
-            let years = time.append('div').attr('class', 'legend-row')
-            years.append('p').attr('class', 'alignLeft').text('2021')
+            let years = time.append('div').attr('class', 'legend-row');
+            years.append('p').attr('class', 'alignLeft').text('2021');
             years.append('p').attr('class', 'alignRight ').text('2022')
         }
         let leg = lc.append('div').attr('id', 'leg').attr('class', 'legend'),
@@ -92,8 +108,8 @@ class LineChart {
             unv = lc.append('div').attr('id', 'unvax-leg').attr('class', 'legend');
 
         if (this.complex) {
-            vac.append('div').attr('class', 'legend-title').text('Rate of Vaccinated')
-            unv.append('div').attr('class', 'legend-title').text('Rate of Unvaccinated')
+            vac.append('div').attr('class', 'legend-title').text(vis.rlabels[0]);
+            unv.append('div').attr('class', 'legend-title').text(vis.rlabels[1]);
 
             let leg_row1 = leg.append('div'), leg_row2 = leg.append('div'),
                 vac_row1 = vac.append('div'), vac_row2 = vac.append('div'), vac_row3 = vac.append('div'),
@@ -101,7 +117,7 @@ class LineChart {
             let rows = [leg_row1, leg_row2, vac_row1, vac_row2, vac_row3, unv_row1, unv_row2, unv_row3].map(d => d.attr('class', 'legend-row')),
                 rids = ['lsvg1', 'lsvg2', 'vsvg1', 'vsvg2', 'vsvg3', 'usvg1', 'usvg2', 'usvg3'],
                 rcolors = ['#ef701b', '#0984ea', '#9e3a26', '#ef701b', '#f4d166', '#04386b', '#0984ea', '#7dc9f5'],
-                rlabels = ['Rate of Unvaccinated', 'Rate of Vaccinated', 'Ages 80+', 'Ages 50-79', 'Ages 18-49', 'Ages 80+', 'Ages 50-79', 'Ages 18-49']
+                rlabels = vis.rlabels;
 
             rows.forEach((d, i) => {
                 d.append('div').attr('class', 'legend-value').append('svg').attr('id', rids[i]).append('rect').style('fill', rcolors[i])
@@ -109,9 +125,9 @@ class LineChart {
             })
         } else {
             vac.append('div').attr('class', 'legend-value').append('svg').attr('id', "vacced").append('rect').style('fill', "orange")
-            vac.append('div').attr('class', 'legend-label').text('Rate of Vaccinated')
+            vac.append('div').attr('class', 'legend-label').text(vis.rlabels[0]);
             unv.append('div').attr('class', 'legend-value').append('svg').attr('id', "vacced").append('rect').style('fill', "blue")
-            unv.append('div').attr('class', 'legend-label').text('Rate of Unvaccinated')
+            unv.append('div').attr('class', 'legend-label').text(vis.rlabels[1])
         }
 
         leg.style('display', 'none')
@@ -179,7 +195,7 @@ class LineChart {
             .attr("x", -vis.width / 4)
             .attr("y", 0 - 55)
             .attr("font-size", fontsize)
-            .text("Cases per 100k people");
+            .text(vis.ylabel);
 
         if (this.interactive) {
             vis.initBrush();
@@ -483,24 +499,24 @@ class LineChart {
             vis.text7.attr("text-anchor", anchor).attr("x", x_text);
             vis.text8.attr("text-anchor", anchor).attr("x", x_text);
 
-            vis.tooltip.attr("transform", "translate(" + x_coordinate + ")")
+            vis.tooltip.attr("transform", "translate(" + x_coordinate + ")");
             vis.text.text("Week: " + (closest.Max_Week_Date1));
 
             if (vis.complex) {
-                vis.text3.text("Rate of Unvaccinated: ");
-                vis.text4.text("Ages 80+: " + (closest.Unvax_80) + " per 100k");
-                vis.text5.text("Ages 50-79: " + (closest.Unvax_50_79) + " per 100k");
-                vis.text6.text("Ages 18-49: " + (closest.Unvax_18_49) + " per 100k");
+                vis.text3.text(vis.rlabels[1]);
+                vis.text4.text(vis.rlabels[5] + ": " + (closest.Unvax_80) + vis.legendLabel);
+                vis.text5.text(vis.rlabels[6] + ": " + (closest.Unvax_50_79) + vis.legendLabel);
+                vis.text6.text(vis.rlabels[7] + ": " + (closest.Unvax_18_49) + vis.legendLabel);
 
-                vis.text7.text("Rate of Vaccinated: ");
-                vis.text8.text("Ages 80+: " + (closest.Vax_80) + " per 100k");
-                vis.text9.text("Ages 50-79: " + (closest.Vax_50_79) + " per 100k");
-                vis.text10.text("Ages 18-49: " + (closest.Vax_18_49) + " per 100k");
+                vis.text7.text(vis.rlabels[0]);
+                vis.text8.text(vis.rlabels[2] + ": " + (closest.Vax_80) + vis.legendLabel);
+                vis.text9.text(vis.rlabels[3]+ ": " + (closest.Vax_50_79) + vis.legendLabel);
+                vis.text10.text(vis.rlabels[4] + ": " + (closest.Vax_18_49) + vis.legendLabel);
             } else {
-                vis.text3.text("Rate of Unvaccinated: ");
-                vis.text4.text((closest.Age_adjusted_unvax_IR) + " per 100k");
-                vis.text7.text("Rate of Vaccinated: ");
-                vis.text8.text((closest.Age_adjusted_vax_IR) + " per 100k");
+                vis.text3.text(vis.rlabels[0]);
+                vis.text4.text((closest.Age_adjusted_unvax_IR) + vis.legendLabel);
+                vis.text7.text(vis.rlabels[1]);
+                vis.text8.text((closest.Age_adjusted_vax_IR) + vis.legendLabel);
 
             }
         }
@@ -509,8 +525,7 @@ class LineChart {
 
     initBrush() {
         let vis = this;
-        const width = d3.select('#brush-chart').node().getBoundingClientRect().width;
-        const height = width / 8.8;
+        const width = d3.select('#brush-chart').node().getBoundingClientRect().width, height = 32;
 
         let x = d3.scaleTime()
             .domain([new Date(2021, 3, 5), new Date(2022, 1, 7)])
@@ -576,7 +591,7 @@ class LineChart {
                         vis.clear_brush_func('click')
                     }
                 }
-                vis.last_brush =  e.selection !== null ? e.selection[0] : null;
+                vis.last_brush = e.selection !== null ? e.selection[0] : null;
             });
 
         let svg = d3.select("#brush-chart").append("svg")

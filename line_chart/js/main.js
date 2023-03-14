@@ -1,6 +1,6 @@
 var chart
 
-function getLineChartData(complexity, showSource, doTour, selector) {
+function getLineChartData(props) {
     return d3.json('https://vcg.github.io/trust_in_science/line_chart/data/toursteps.json')
         .then(toursteps => {
             d3.csv("https://vcg.github.io/trust_in_science/line_chart/data/line_chart_complex.csv", (row, i) => {
@@ -14,28 +14,75 @@ function getLineChartData(complexity, showSource, doTour, selector) {
                 row.Age_adjusted_unvax_IR = number_format_line(+row.Age_adjusted_unvax_IR);
                 row.Age_adjusted_vax_IR = number_format_line(+row.Age_adjusted_vax_IR);
 
-                row.Week = formatDate(+row.Max_Week_Date)
+                row.Week = formatDate(+row.Max_Week_Date);
                 row.date = (row.Max_Week_Date);
 
                 row.Max_Week_Date = parseDate(row.Max_Week_Date);
                 row.Week_no = +row.Week_no;
-                row.Week = formatDate(+row.Max_Week_Date)
+                row.Week = formatDate(+row.Max_Week_Date);
                 row.date = row.Max_Week_Date;
                 row.month = +row.Index;
                 return row;
             }).then(data => {
                 chart = new LineChart({
                     data: data,
-                    complexity: complexity,
-                    source: showSource,
-                    selector: selector
+                    complexity: props.complexity,
+                    source: props.showSource,
+                    selector: props.selector,
+                    changes: props.changes,
+                    allowInteraction: props.allowInteraction,
+                    showCovidData: props.showCovidData,
+                    chart_title: props.showCovidData
+                        ? {
+                            complex: 'Weekly count of vaccinated & unvaccinated individuals who caught Covid-19, split by age',
+                            default: 'Weekly count of vaccinated & unvaccinated individuals who caught Covid-19'
+                        }
+                        : {
+                            complex: 'Weekly count of insect-related and fungi-related crop diseases in Kumrovec, Croatia, split by type',
+                            default: 'Weekly count of insect-related and fungi-related crop diseases in Kumrovec, Croatia'
+                        },
+                    chart_legend_label: props.showCovidData ? ' per 100k' : ' per 100 acres',
+                    chart_axis_labels: props.showCovidData
+                        ? {
+                            y: 'Cases per 100k people'
+                        }
+                        : {
+                            y: 'Pests per 100 acres'
+                        },
+                    chart_legend_labels: props.showCovidData
+                        ? [
+                            'Rate of Vaccinated',
+                            'Rate of Unvaccinated',
+                            'Ages 80+',
+                            'Ages 50-79',
+                            'Ages 18-49',
+                            'Ages 80+',
+                            'Ages 50-79',
+                            'Ages 18-49'
+                        ]
+                        : [
+                            'Insect-Related Crop Diseases',
+                            'Fungi-Related Crop Diseases',
+                            'Mealybug',
+                            'Bollworm',
+                            'Aphid',
+                            'Black root rot',
+                            'Clubfoot',
+                            'Sclerotinia rots'
+                        ]
                 });
-                chart.initVis('chart', true)
-                if (doTour) createTour(complexity, toursteps)
+                chart.initVis('chart', true);
+                if (props.doTour) createTour(props.complexity, toursteps)
             })
         });
 }
 
-//getLineChartData('simple', true, false)
-//getLineChartData('moderate', true, true)
-//getLineChartData('complex', true, false)
+let props = {
+    complexity: 'complex',
+    doTour: false,
+    showSource: true,
+    changes: true,
+    showCovidData: true,
+    allowInteraction: true
+};
+getLineChartData(props);
