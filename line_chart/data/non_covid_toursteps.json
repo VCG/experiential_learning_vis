@@ -1,0 +1,96 @@
+{
+    "complex": [
+      {
+        "id": "#chart",
+        "location": "bottom",
+        "title": "Line Chart Visualization",
+        "text": "This is the main visualizations.<br> <b>Your turn:</b> Hover over the lines to see details.",
+        "class": "first-vis-step",
+        "disabled": false
+      },
+      {
+        "id": "#time_filter_div",
+        "location": "left",
+        "title": "This is a time filter!",
+        "text": "You can use this filter to brush and select a subset of weeks. Only the data of the selected weeks will be shown in the visualization.<br> <b>Your turn:</b> Try creating a filter by clicking and dragging over a set of weeks.",
+        "class": "brush-step",
+        "disabled": true
+      },
+      {
+        "id": "#time_filter_div",
+        "location": "left",
+        "title": "This is a time filter!",
+        "text": "<b>Your turn:</b> Now try moving the filter you have created.",
+        "class": "move-step",
+        "disabled": true
+      },
+      {
+        "id": "#time_filter_div",
+        "location": "left",
+        "title": "This is a time filter!",
+        "text": "<b>Your turn:</b> Now, click on the time filter outside of the selection you created to clear the filter.",
+        "class": "clear-step",
+        "disabled": true
+      },
+      {
+        "id": "#legend",
+        "location": "left",
+        "title": "This is the legend.",
+        "text": "The legend explains you which color represents which parts of the data",
+        "class": "legend-step",
+        "disabled": false
+      }
+    ],
+    "moderate": [
+      {
+        "id": "#chart",
+        "location": "bottom",
+        "title": "Line Chart Tour",
+        "text": "Before we show you the line chart, we will first guide you through the main components of the visualization.",
+        "class": "start-step",
+        "disabled": false
+      },
+      {
+        "id": "#chart",
+        "location": "bottom",
+        "title": "Line Chart Visualization",
+        "text": "This is the main visualizations.<br> <b>Your turn:</b> Hover over the lines to see details.",
+        "class": "first-vis-step",
+        "disabled": false
+      },
+      {
+        "id": "#legend",
+        "location": "left",
+        "title": "This is the legend.",
+        "text": "The legend explains you which color represents which parts of the data",
+        "class": "legend-step",
+        "disabled": false
+      }
+    ],
+    "simple": [
+      {
+        "id": "#chart",
+        "location": "bottom",
+        "title": "Line Chart Tour",
+        "text": "Before we show you the line chart, we will first guide you through the main components of the visualization.",
+        "class": "start-step",
+        "disabled": false
+      },
+      {
+        "id": "#chart",
+        "location": "bottom",
+        "title": "Line Chart Visualization",
+        "text": "This is the main visualizations.<br> <b>Your turn:</b> Hover over the lines to see details.",
+        "class": "first-vis-step",
+        "disabled": false
+      },
+      {
+        "id": "#legend",
+        "location": "left",
+        "title": "This is the legend.",
+        "text": "The legend explains you which color represents which parts of the data",
+        "class": "legend-step",
+        "disabled": false
+      }
+    ]
+  }
