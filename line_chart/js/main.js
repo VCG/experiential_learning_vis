@@ -3,8 +3,8 @@ var chart
 function getLineChartData(props) {
     return d3.json('https://vcg.github.io/trust_in_science/line_chart/data/toursteps.json')
         .then(toursteps => {
-            // d3.csv("https://vcg.github.io/trust_in_science/line_chart/data/line_chart_complex.csv", (row, i) => {
-            d3.csv("js/line_chart_complex.csv", (row, i) => {
+            d3.csv("https://vcg.github.io/trust_in_science/line_chart/data/line_chart_complex.csv", (row, i) => {
+            // d3.csv("js/line_chart_complex.csv", (row, i) => {
                 row.Vax_18_49 = number_format_line(+row.Vax_18_49);
                 row.Vax_50_79 = number_format_line(+row.Vax_50_79);
                 row.Vax_80 = number_format_line(+row.Vax_80);
