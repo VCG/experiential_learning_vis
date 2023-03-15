@@ -36,7 +36,7 @@
         "id": ".legend",
         "location": "left",
         "title": "Legend",
-        "text": "This is the legend. For both fungi-related and insect-related crop diseases, the data is broken down by specimen.<br><br> That's it, have fun exploring the data!",
+        "text": "This is the legend. For both fungi-related and insect-related crop diseases, the data is broken down by pest species.<br><br> That's it, have fun exploring the data!",
         "class": "legend-step",
         "disabled": false
       }
