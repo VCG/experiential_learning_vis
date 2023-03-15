@@ -71,11 +71,11 @@ let vlatPrompts =
         },
         "moderate-line-vlat-1":{
             "prompt":{
-                "covid": "What was the maximum number of cases (per 100K people) recorded amongst unvaccinated individuals between January and February 2022?",  
-                "nonCovid": "What was the maximum number of pests (per 100 acres) recorded for insect-related diseases between January and February 2022?"  
+                "covid": "What was the range (max - min) of cases reported for unvaccinated individuals on Jan 15 2022?",  
+                "nonCovid":"What was the range (max - min) of insect-related pest counts on Jan 15 2022?"  
             },
-            "answer":3500,
-            "options":[1000,3500, 2900]
+            "answer":1500,
+            "options":[3500,1500, 2000]
         },
         "moderate-line-vlat-2":{
             "prompt":{
