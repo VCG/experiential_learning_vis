@@ -83,7 +83,7 @@ let vlatPrompts =
                 "nonCovid": "Which disease type had the most variability in their pest counts in August of 2021?"  
             },
             "answer":"Unvaccinated / Insect-Related",
-            "options":{"covid":["Unvaccinated","Vaccinated"],"nonCovid":["Insect-Related", "Fungi-Related"]}
+            "options":{"covid":["Unvaccinated","Vaccinated","Both were the same"],"nonCovid":["Insect-Related", "Fungi-Related","Both were the same"]}
         },
         "complex-line-vlat-1":{
             "prompt":{

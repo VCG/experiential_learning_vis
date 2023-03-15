@@ -4,7 +4,7 @@
       "id": "#chart",
       "location": "bottom",
       "title": "Interactive Line Chart",
-      "text": "This is an interactive line chart. <br> <br> Yellow, orange, and red lines represent <b>insect-related</b> crop diseases; light, medium, and dark blue lines represent <b>fungi-related</b> crop diseases.<br> <br> <b>Your turn:</b> Hover over the line chart to see the data for the corresponding date.",
+      "text": "This is an interactive line chart showing pest counts for different types of crop diseases. <br> <br> Yellow, orange, and red lines represent <b>insect-related</b> crop diseases; light, medium, and dark blue lines represent <b>fungi-related</b> crop diseases.<br> <br> <b>Your turn:</b> Hover over the line chart to see the data for the corresponding date.",
       "class": "main-vis-step",
       "disabled": false
     },
@@ -45,8 +45,8 @@
     {
       "id": "#chart",
       "location": "bottom",
-      "title": "Line Chart with Underlying Data Range",
-      "text": "This is a line chart. The line shows the mean values and the shaded areas indicate the range (min/max) of the underlying data. <br> <br> The orange line represents <b>insect-related</b> crop diseases; the blue line represents <b>fungi-related</b> crop diseases. <br> <br> <b>Your turn:</b> Hover over the line chart to see the data for the corresponding date.",
+      "title": "Line Chart with Min/Max Range",
+      "text": "This is a line chart. The line shows the mean pest count and the shaded areas indicate the range (min/max) of the underlying data. <br> <br> The orange line represents <b>insect-related</b> crop diseases; the blue line represents <b>fungi-related</b> crop diseases. <br> <br> <b>Your turn:</b> Hover over the line chart to see the data for the corresponding date.",
       "class": "main-vis-step",
       "disabled": false
     },
@@ -64,7 +64,7 @@
       "id": "#chart",
       "location": "bottom",
       "title": "Line Chart",
-      "text": "This is a line chart. <br><br> The orange line represents <b>insect-related</b> crop diseases; the blue line represents <b>fungi-related</b> crop diseases. <br> <br> <b>Your turn:</b> Hover over the line chart to see the data for the corresponding date.",
+      "text": "This is a line chart showing pest counts for different types of crop diseases. <br><br> The orange line represents <b>insect-related</b> crop diseases; the blue line represents <b>fungi-related</b> crop diseases. <br> <br> <b>Your turn:</b> Hover over the line chart to see the data for the corresponding date.",
       "class": "first-vis-step",
       "disabled": false
     },
