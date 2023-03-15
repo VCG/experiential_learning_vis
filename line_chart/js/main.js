@@ -80,7 +80,8 @@ function getLineChartData(props) {
                         ]
                 });
                 chart.initVis('chart', true);
-                if (props.doTour) createTour(props.complexity, toursteps)
+                if (props.doTour) createTour(props.complexity, toursteps, chart.provData)
+                trackFocus(chart.provData)
             })
         });
 }
