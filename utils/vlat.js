@@ -59,7 +59,7 @@ let vlatPrompts =
                 "nonCovid": "How many insect-related pests were registered (per 100 acres) in January 2022?"
             },
             "answer":3101,
-            "options":[1400,2200,3100]
+            "options":[1400,3100,2200]
         },
         "simple-line-vlat-2":{
             "prompt":{
@@ -67,7 +67,7 @@ let vlatPrompts =
                 "nonCovid": "About how much did the number of fungi-related pests fall from January to February of 2022?",  
             },
             "answer":1200,
-            "options":[2500,700, 1200]
+            "options":[1200,2500,700]
         },
         "moderate-line-vlat-1":{
             "prompt":{
@@ -75,7 +75,7 @@ let vlatPrompts =
                 "nonCovid": "What was the maximum number of pests (per 100 acres) recorded for insect-related diseases between January and February 2022?"  
             },
             "answer":3500,
-            "options":[1000,2900, 3500]
+            "options":[1000,3500, 2900]
         },
         "moderate-line-vlat-2":{
             "prompt":{
