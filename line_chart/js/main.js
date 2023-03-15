@@ -3,6 +3,8 @@ var chart
 function getLineChartData(props) {
     // return d3.json(`data/${props.showCovidData ? "covid" : "non_covid"}_toursteps.json`)
     return d3.json(`https://vcg.github.io/trust_in_science/line_chart/data/${props.showCovidData ? "covid" : "non_covid"}_toursteps.json`)
+    // return d3.json(`data/${props.showCovidData ? "covid" : "non_covid"}_toursteps.json`)
+
         .then(toursteps => {
             console.log(toursteps)
             d3.csv("https://vcg.github.io/trust_in_science/line_chart/data/line_chart_complex.csv", (row, i) => {
@@ -85,7 +87,7 @@ function getLineChartData(props) {
 
 // let props = {
 //     complexity: 'complex',
-//     doTour: true,
+//     doTour: false,
 //     showSource: true,
 //     changes: true,
 //     showCovidData: false,

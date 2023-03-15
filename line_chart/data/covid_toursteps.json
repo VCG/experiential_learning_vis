@@ -46,7 +46,7 @@
       "id": "#chart",
       "location": "bottom",
       "title": "Line Chart with Confidence Intervals",
-      "text": "This is a line chart with confidence intervals. <br> <br> The orange line represents <b>unvaccinated</b> people; the blue line represents <b>vaccinated</b> people. <br> <br> <b>Your turn:</b> Hover over the line chart to see the data for the corresponding date.",
+      "text": "This is a line chart. The line shows the mean values and the shaded areas indicate the range (min/max) of the underlying data. <br> <br> The orange line represents <b>unvaccinated</b> people; the blue line represents <b>vaccinated</b> people. <br> <br> <b>Your turn:</b> Hover over the line chart to see the data for the corresponding date.",
       "class": "main-vis-step",
       "disabled": false
     },
