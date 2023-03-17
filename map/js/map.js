@@ -1,12 +1,13 @@
 class MapChart {
     constructor(props) {
         this.complex = props.complexity === "moderate" || props.complexity === "complex";
-        this.interactive = props.complexity === "complex";
+        this.interactive = props.isInteractive;
         this.source = props.source;
         this.geoData = props.data[0];
         this.covidData = props.data[1];
         this.states = props.data[2][0];
         this.complexData = props.data[2][1];
+        this.allowInteraction = props.allowInteraction;
         this.colorScale = d3.scaleSequential(d3.interpolateBlues);
         this.buildHtml(props.selector);
     }
@@ -18,7 +19,7 @@ class MapChart {
             ? d3.select(`#${selector.questionId}`).select('.QuestionText')
                 .insert('div', ':first-child')
                 .attr('class', 'row')
-            : d3.select('#main-container').select('.QuestionText')
+            : d3.select('#main-container').select('.QuestionText');
 
         let mc = container.append('div').attr('class', 'col-8 main-content');
         mc.append('div').attr('class', 'title')
@@ -38,7 +39,7 @@ class MapChart {
                 '    </div>\n' +
                 '    <div class="grid-map">\n' +
                 '        <div class="grid-row">\n' +
-                '            <div class = "legend_title">Legend</div>\n' +
+                '            <div class = "legend_title" id = "legend">Legend</div>\n' +
                 '            <div class="grid-cell empty"></div>\n' +
                 '            <div class="grid-cell empty"></div>\n' +
                 '            <div class="grid-cell state state-ak"><div class="state-label">AK</div></div>\n' +
@@ -184,7 +185,7 @@ class MapChart {
             vis.states.forEach(state => {
                 this.lineChartSmall(`.state-${state.code.toLowerCase()}`, vis.complexData, state, maxNewCases);
                 //only if interactive
-                if (vis.interactive) {
+                if (vis.interactive && vis.allowInteraction) {
                     $(`.state-${state.code.toLowerCase()}`).click(() => {
                         this.lineChartLarge("#chart-overlay", vis.complexData, state.code);
                         $("#chart-overlay .title").text(state.name);
@@ -196,6 +197,7 @@ class MapChart {
     }
 
     lineChartSmall(parentElement, dataIn, state, maxValue) {
+        let vis = this;
         let data = dataIn.filter(d => d.State === state.code);
 
         let margin = {top: 0, right: 0, bottom: 0, left: 0},
@@ -246,17 +248,19 @@ class MapChart {
                 return `<div style="text-align:center;font-weight:bold;margin-bottom: 10px;">${stateName}</div><div><b> Date: </b> ${dateFormatter(date)}<br /><b>Number of New Cases: ${Math.floor(value)}</b></div>`;
             });
 
-        svg.call(tip)
-            .on("mouseover", function () {
-                tooltip.attr("display", "null");
-            })
-            .on("mousemove", function (e, d) {
-                tip.show(e, d, this);
-            })
-            .on("mouseout", function () {
-                tooltip.attr("display", "none");
-                tip.hide();
-            });
+        if (vis.allowInteraction) {
+            svg.call(tip)
+                .on("mouseover", function () {
+                    tooltip.attr("display", "null");
+                })
+                .on("mousemove", function (e, d) {
+                    tip.show(e, d, this);
+                })
+                .on("mouseout", function () {
+                    tooltip.attr("display", "none");
+                    tip.hide();
+                });
+        }
 
         svg.append("path")
             .data([data])
@@ -477,23 +481,25 @@ class MapChart {
             .attr("y", 70)
             .style("fill", "red");
 
-        let overlay = svg.append("rect")
-            .attr("width", width)
-            .attr("height", height)
-            .attr("x", 0)
-            .attr("y", 0)
-            .style("position", "absolute")
-            .style("box-shadow", "2px 2px 4px lightgrey")
-            .style("padding", "10px")
-            .attr("fill", "transparent")
-            .on("mouseover", function (event, d) {
-                tooltip.attr("display", "null");
-            })
-            .on("mouseout", function (event, d) {
-                tooltip.attr("display", "none")
-                    .style("opacity", 0)
-            })
-            .on("mousemove", mousemove);
+        if (vis.allowInteraction) {
+            let overlay = svg.append("rect")
+                .attr("width", width)
+                .attr("height", height)
+                .attr("x", 0)
+                .attr("y", 0)
+                .style("position", "absolute")
+                .style("box-shadow", "2px 2px 4px lightgrey")
+                .style("padding", "10px")
+                .attr("fill", "transparent")
+                .on("mouseover", function (event, d) {
+                    tooltip.attr("display", "null");
+                })
+                .on("mouseout", function (event, d) {
+                    tooltip.attr("display", "none")
+                        .style("opacity", 0)
+                })
+                .on("mousemove", mousemove);
+        }
 
         let bisectDate = d3.bisector(d => d.date).left;
         let formatTime = d3.timeFormat("%Y-%m-%d");
@@ -610,13 +616,16 @@ class MapChart {
             .style("stroke", "#000")
             .style("stroke-width", "0.5px")
             .style("cursor", "pointer")
-            .on("mouseover", mouseover)
-            .on("mouseout", mouseout)
-            .on("mousemove", mousemove);
-
-        // append tooltip
-        vis.tooltip = d3.select("body").append("div").attr("class", "tooltip");
-
+            .on("mouseover", vis.allowInteraction ? mouseover : () => {
+            })
+            .on("mouseout", vis.allowInteraction ? mouseout : () => {
+            })
+            .on("mousemove", vis.allowInteraction ? mousemove : () => {
+            });
+        if (vis.allowInteraction) {
+            // append tooltip
+            vis.tooltip = d3.select("body").append("div").attr("class", "tooltip");
+        }
 
         // // tooltip mouse functions
         function mouseover(_, d) {
@@ -648,8 +657,6 @@ class MapChart {
 // creates a gradient legend with an x-axis
     initLegend() {
         let vis = this;
-
-
         vis.axisScale = d3.scaleLinear().range([vis.margin.left, vis.width / 2]);
 
         vis.barHeight = 15;
@@ -677,6 +684,7 @@ class MapChart {
 
         vis.legendAxis = vis.svg.append("g")
             .attr("class", "x-axis")
+            .attr("id", "legend")
             .attr("transform", `translate(${vis.width / 4 - vis.margin.left}, ${vis.height + 50})`);
 
         vis.axisScale.domain(vis.colorScale.domain());

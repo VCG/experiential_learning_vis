@@ -20,32 +20,35 @@ let promises = [
 ];
 
 function getMapChartData(props) {
-    return Promise.all(promises)
+    Promise.all(promises)
         .then(function (data) {
             // TODO: Adapt tourstep to map
-            return d3.json(`https://vcg.github.io/trust_in_science/line_chart/data/${props.showCovidData ? "covid" : "non_covid"}_toursteps.json`)
+            return d3.json(`data/${props.showCovidData ? "covid" : "non_covid"}_toursteps.json`)
+            // return d3.json(`https://vcg.github.io/trust_in_science/map/data/${props.showCovidData ? "covid" : "non_covid"}_toursteps.json`)
                 .then(toursteps => {
                     let chart = new MapChart({ // ADAPT to Props
                         data: data,
                         complexity: props.complexity,
-                        isInteractive: props.allowInteraction,
-                        source: props.showSource
+                        isInteractive: props.complexity === 'complex',
+                        source: props.showSource,
+                        allowInteraction: props.allowInteraction,
                     });
                     chart.initVis('chart');
-                    if (props.doTour) createTour(props.complexity, toursteps, chart.provData)
+                    if (props.doTour) createTour(props.complexity, toursteps, chart.provData);
+                    trackFocus(chart.provData)
                 });
         })
         .catch(function (err) {
             console.log(err)
         });
 }
-//
+
 // let props = {
-//     complexity: 'moderate',
+//     complexity: 'complex',
 //     doTour: false,
 //     showSource: true,
 //     changes: true,
-//     showCovidData: false,
+//     showCovidData: true,
 //     allowInteraction: true
 // };
 // getMapChartData(props);
