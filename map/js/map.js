@@ -1,7 +1,7 @@
 class MapChart {
     constructor(props) {
-        this.complex = props.isComplex;
-        this.interactive = !this.complex ? false : props.isInteractive;
+        this.complex = props.complexity === "moderate" || props.complexity === "complex";
+        this.interactive = props.complexity === "complex";
         this.source = props.source;
         this.geoData = props.data[0];
         this.covidData = props.data[1];
@@ -12,7 +12,7 @@ class MapChart {
     }
 
     buildHtml(selector = null) {
-        console.log('building html')
+        console.log('building html');
         let vis = this;
         let container = selector
             ? d3.select(`#${selector.questionId}`).select('.QuestionText')
