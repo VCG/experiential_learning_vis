@@ -39,14 +39,14 @@ function getMapChartData(props) {
             console.log(err)
         });
 }
-
-let props = {
-    complexity: 'moderate',
-    doTour: false,
-    showSource: true,
-    changes: true,
-    showCovidData: false,
-    allowInteraction: true
-};
-getMapChartData(props);
+//
+// let props = {
+//     complexity: 'moderate',
+//     doTour: false,
+//     showSource: true,
+//     changes: true,
+//     showCovidData: false,
+//     allowInteraction: true
+// };
+// getMapChartData(props);
 
