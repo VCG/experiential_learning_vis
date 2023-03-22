@@ -87,7 +87,7 @@ function getLineChartData(props) {
 }
 
 // let props = {
-//     complexity: 'complex',
+//     complexity: 'simple',
 //     doTour: false,
 //     showSource: true,
 //     changes: true,

@@ -546,15 +546,15 @@ class LineChart {
             vis.text.text("Week: " + (closest.Max_Week_Date1));
 
             if (vis.complexity == 'complex' && vis.allow_interaction) {
-                vis.text3.text(vis.rlabels[1]);
-                vis.text4.text(vis.rlabels[5] + ": " + (closest.Unvax_80) + vis.legendLabel);
-                vis.text5.text(vis.rlabels[6] + ": " + (closest.Unvax_50_79) + vis.legendLabel);
-                vis.text6.text(vis.rlabels[7] + ": " + (closest.Unvax_18_49) + vis.legendLabel);
+                vis.text3.text(vis.rlabels[0]);
+                vis.text4.text(vis.rlabels[2] + ": " + (closest.Unvax_80) + vis.legendLabel);
+                vis.text5.text(vis.rlabels[3] + ": " + (closest.Unvax_50_79) + vis.legendLabel);
+                vis.text6.text(vis.rlabels[4] + ": " + (closest.Unvax_18_49) + vis.legendLabel);
 
-                vis.text7.text(vis.rlabels[0]);
-                vis.text8.text(vis.rlabels[2] + ": " + (closest.Vax_80) + vis.legendLabel);
-                vis.text9.text(vis.rlabels[3] + ": " + (closest.Vax_50_79) + vis.legendLabel);
-                vis.text10.text(vis.rlabels[4] + ": " + (closest.Vax_18_49) + vis.legendLabel);
+                vis.text7.text(vis.rlabels[1]);
+                vis.text8.text(vis.rlabels[5] + ": " + (closest.Vax_80) + vis.legendLabel);
+                vis.text9.text(vis.rlabels[6] + ": " + (closest.Vax_50_79) + vis.legendLabel);
+                vis.text10.text(vis.rlabels[7] + ": " + (closest.Vax_18_49) + vis.legendLabel);
             } else {
                 vis.text3.text(vis.rlabels[0]);
                 vis.text4.text((closest.Age_adjusted_unvax_IR) + vis.legendLabel);

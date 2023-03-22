@@ -94,7 +94,7 @@ function getBarChartData(props) {
 
 // // //
 // let props = {
-//     complexity: 'complex',
+//     complexity: 'moderate',
 //     doTour: false,
 //     showSource: true,
 //     changes: false,
