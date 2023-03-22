@@ -87,7 +87,7 @@ let vlatPrompts =
         },
         "complex-line-vlat-1":{
             "prompt":{
-                "covid": "In late December 2022, what age group of vaccinated people report a higher case count than unvaccinated people Ages 80+?",  
+                "covid": "In late December 2021, what age group of vaccinated people report a higher case count than unvaccinated people Ages 80+?",  
                 "nonCovid":  "In late December 2022, what type of fungi-related disease had a higher pest count than the insect-related Mealybug?" 
             },
             "answer":"18-49 / Sclerotinia rots",

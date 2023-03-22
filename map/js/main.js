@@ -1,5 +1,5 @@
-let parseDate = d3.timeParse("%Y-%m-%d");
-let number_format = d3.format(",")
+// let parseDate = d3.timeParse("%Y-%m-%d");
+// let number_format = d3.format(",")
 
 // load data using promises
 let promises = [
@@ -19,23 +19,37 @@ let promises = [
     })
 ];
 
-function getMapChartData() {
-    return Promise.all(promises)
+function getMapChartData(props) {
+    Promise.all(promises)
         .then(function (data) {
-            return data;
+            // TODO: Adapt tourstep to map
+            return d3.json(`data/${props.showCovidData ? "covid" : "non_covid"}_toursteps.json`)
+            // return d3.json(`https://vcg.github.io/trust_in_science/map/data/${props.showCovidData ? "covid" : "non_covid"}_toursteps.json`)
+                .then(toursteps => {
+                    let chart = new MapChart({ // ADAPT to Props
+                        data: data,
+                        complexity: props.complexity,
+                        isInteractive: props.complexity === 'complex',
+                        source: props.showSource,
+                        allowInteraction: props.allowInteraction,
+                    });
+                    chart.initVis('chart');
+                    if (props.doTour) createTour(props.complexity, toursteps, chart.provData);
+                    trackFocus(chart.provData)
+                });
         })
         .catch(function (err) {
             console.log(err)
         });
 }
 
-getMapChartData()
-    .then(data => {
-        let chart = new MapChart({
-            data: data,
-            isComplex: true,
-            isInteractive: true,
-            source: true
-        });
-        chart.initVis('chart')
-    })
+// let props = {
+//     complexity: 'complex',
+//     doTour: false,
+//     showSource: true,
+//     changes: true,
+//     showCovidData: true,
+//     allowInteraction: true
+// };
+// getMapChartData(props);
+
